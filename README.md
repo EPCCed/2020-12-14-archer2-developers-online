@@ -1,12 +1,10 @@
-# EPCC Service Desk Operation
+# ARCHER2 for package users
 
 This is not an official Carpentries lesson, but the Carpentries lesson template is excellent, so we are using it.
 
 ## Maintainer(s)
 
 * Andy Turner
-* Jo Beech-Brandt
-* Xu Guo 
 
 ## Authors
 
