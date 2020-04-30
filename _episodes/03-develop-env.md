@@ -1,17 +1,20 @@
 ---
-title: "ARCHER2 software environment "
-teaching: 10
-exercises: 0
+title: "ARCHER2 development environment "
+teaching: 30
+exercises: 15
 questions:
-- "What does the ARCHER2 software environment look like and how do I access software?"
-- "How can I find out what software is available?"
-- "How can I request, install or get help with software on ARCHER2?"
+- "What does the ARCHER2 development environment look like and how do I access different components?"
+- "How can I find out what compilers, tools and libraries are available?"
+- "How can I capture my current environment for reuse or to share with others?"
+- "How can I get help with compiling and developing software on ARCHER2?"
 objectives:
-- "Know how to access different software on ARCHER2 using Lmod modules."
+- "Know how to access different parts of the development environment on ARCHER2 using Lmod modules."
 - "Know how to find out what is installed and where to get help."
 keypoints:
-- "Software is available through modules."
-- "The CSE service can help with software issues."
+- "The development environment is controlled through Lmod modules."
+- "ARCHER2 supports the GCC, AOCC and Cray compilers."
+- "Compilers are accessed through the `ftn`, `cc` and `CC` wrapper commands."
+- "The CSE service can help with software development issues."
 ---
 
 ## Using software modules on ARCHER2
@@ -24,18 +27,43 @@ Software modules are provided by both Cray and the ARCHER2 CSE team at [EPCC](ht
 
 ## What modules are loaded when you log into ARCHER2?
 
-All users start with a default set of modules loaded into their environment
+All users start with a default set of modules loaded into their environment.
+
+**TODO** Add in the set of default modules once known.
+
+This means that your environment is already configured to build software using the Cray compiling
+environment (CCE), the current default version of Cray MPICH and with numerical libraries provided
+by the current default version of Cray LibSci.
+
+## Switching between compiler environments
+
+You use the `module swap` command to switch between the three different compiler envionments available
+on ARCHER2. The available environments are:
+
+* Cray Compiling Environment (CCE): `PrgEnv-cray`
+* Gnu Compiler Collection (GCC): `PrgEnv-gnu`
+* AMD Optimizing Compilers (AOCC): `PrgEnv-aocc` (**TODO** Check this name)
+
+As `PrgEnv-cray` is loaded by default when you log in, you can swap to the GCC compiler environment
+with:
+
+```
+[auser@archer2-login1 ~]$ module swap PrgEnv-cray PrgEnv-gcc
+```
+{: .language-bash}
+
+## Switching between different compiler versions
+
 
 ## Finding out what software is available
 
 You can query which software is provided by modules with the `module avail` command:
 
 ```
-module avail
-```
-{: .bash}
-```
 [auser@archer2-login1 ~]$ module avail
+```
+{: .language-bash}
+```
 
 ------------------------------------------------ /home/software/modulefiles ------------------------------------------------
    anaconda2/2019-GNU7        mercury/latest                   parmetis/4.0.3
@@ -217,7 +245,7 @@ to apply for your account and retrieve your initial password) by being added to 
    requested at the top of the screen such as the licence holder's name and contact details. If you are
    covered by the license because the licence holder is your supervisor, for example, please state this.
 6. Click *Submit*
-7. 
+
 Your request will then be processed by the ARCHER2 Service Desk who will confirm your license with the
 software owners/developers before enabling your access to the software on ARCHER2. This can take several
 days (depending on how quickly the software owners/developers take to respond) but you will be advised
