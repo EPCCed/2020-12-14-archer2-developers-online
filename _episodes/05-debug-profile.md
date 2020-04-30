@@ -37,6 +37,8 @@ The following debugging tools are available on ARCHER2:
 * **ATP** scalable core file and backtrace analysis when parallel programs crash.
 * **CCDB** Cray Comparative Debugger. Compare two versions of code side-by-side to analyse differences.
 
+See [the Cray Performance Measurement and Analysis Tools User Guide](https://pubs.cray.com/content/S-2376/7.0.0/cray-performance-measurement-and-analysis-tools-user-guide/about-the-cray-performance-measurement-and-analysis-tools-user-guide)
+
 **TODO** Add more details once we have seen the TDS. Links to further documentation.
 
 **TODO** Add exercise on using one or more of the tools (likely gdb4hpc and valgrind4hpc)
@@ -54,6 +56,10 @@ a number of different components:
 * **Reveal** the next-generation integrated performance analysis and code optimization tool, which enables the user to correlate performance data captured during program execution directly to the original source, and identify opportunities for further optimization.
 * **Cray PAPI** components, which are support packages for those who want to access performance counters
 * **Cray Apprentice2** the second-level data analysis tool, used to visualize, manipulate, explore, and compare sets of program performance data in a GUI environment.
+
+**TODO** Add more details once we have seen the TDS. Links to further documentation.
+
+**TODO** Add exercise on using one or more of the tools (likely CrayPAT-lite and CrayPAT)
 
 ## Getting help with debugging and profiling tools
 

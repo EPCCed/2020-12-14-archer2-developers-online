@@ -35,24 +35,7 @@ This means that your environment is already configured to build software using t
 environment (CCE), the current default version of Cray MPICH and with numerical libraries provided
 by the current default version of Cray LibSci.
 
-## Switching between compiler environments
 
-You use the `module swap` command to switch between the three different compiler envionments available
-on ARCHER2. The available environments are:
-
-* Cray Compiling Environment (CCE): `PrgEnv-cray`
-* Gnu Compiler Collection (GCC): `PrgEnv-gnu`
-* AMD Optimizing Compilers (AOCC): `PrgEnv-aocc` (**TODO** Check this name)
-
-As `PrgEnv-cray` is loaded by default when you log in, you can swap to the GCC compiler environment
-with:
-
-```
-[auser@archer2-login1 ~]$ module swap PrgEnv-cray PrgEnv-gcc
-```
-{: .language-bash}
-
-## Switching between different compiler versions
 
 
 ## Finding out what software is available
@@ -226,36 +209,64 @@ If you want to swap two versions of the same module then you simply load the ver
 want to swap for the currently loaded version, Lmod recognises that they are the same module 
 with different versions and swaps them for you. 
 
-## Licensed software
+## Switching between compiler environments
 
-Some of the software installed on ARCHER2 requires a user to have a valid licence agreed with the 
-software owners/developers to be able to use it (for example, VASP). Although you will be able to
-load this software on ARCHER2 you will be barred from actually using it until your licence has been
-verified.
+You use the `module swap` command to switch between the three different compiler envionments available
+on ARCHER2. The available environments are:
 
-You request access to licensed software through the EPCC SAFE (the web administration tool you used
-to apply for your account and retrieve your initial password) by being added to the appropriate
-*Package Group*. To request access to licensed software:
+* Cray Compiling Environment (CCE): `PrgEnv-cray`
+* Gnu Compiler Collection (GCC): `PrgEnv-gnu`
+* AMD Optimizing Compilers (AOCC): `PrgEnv-aocc` (**TODO** Check this name)
 
-1. Log in to [SAFE](https://www.archer.ac.uk/safe/) (**TODO** Update SAFE link)
-2. Go to the Menu *Login accounts* and select the login account which requires access to the software
-3. Click *New Package Group Request*
-4. Select the software from the list of available packages and click *Select Package Group*
-5. Fill in as much information as possible about your license; at the very least provide the information
-   requested at the top of the screen such as the licence holder's name and contact details. If you are
-   covered by the license because the licence holder is your supervisor, for example, please state this.
-6. Click *Submit*
+As `PrgEnv-cray` is loaded by default when you log in, you can swap to the GCC compiler environment
+with:
 
-Your request will then be processed by the ARCHER2 Service Desk who will confirm your license with the
-software owners/developers before enabling your access to the software on ARCHER2. This can take several
-days (depending on how quickly the software owners/developers take to respond) but you will be advised
-once this has been done.
+```
+[auser@archer2-login1 ~]$ module swap PrgEnv-cray PrgEnv-gcc
+[auser@archer2-login1 ~]$ module list
+```
+{: .language-bash}
+
+**TODO** Add output
+
+## Switching between different compiler versions
+
+As for the programming environments, you use the `module swap` command to switch between different
+versions of the compilers within the programming environments. To do this, you need to know the
+names of the compiler modules, they are:
+
+* `cce` for the Cray Compiling Environment
+* `gcc` for the Gnu Compiler Collection
+* `aocc` for the AMD Optimising Compilers
+
+For example, to change the version of GCC you are using you would first switch to the Gnu programming
+environment and then switch to a different version of gcc:
+
+```
+[auser@archer2-login1 ~]$ module swap PrgEnv-cray PrgEnv-gcc
+[auser@archer2-login1 ~]$ module swap gcc gcc/8.2.0
+[auser@archer2-login1 ~]$ module list
+```
+{: .language-bash}
+
+**TODO** Add output
+
+> ## Not all versions are guaranteed to work
+> Each Cray Programming Environment release is released as a coherent set of software that is 
+> guaranteed to work together as a whole. This means that not all compiler version and library
+> version combinations have been tested. If you select a combination from two different PE
+> releases you may experience incompatibility issues.
+>
+> There are particular modules you can use to switch the default module settings to those for
+> different PE releases to ensure oyu get compatible sets of software, these are the `cdt` 
+> modules.
+{: .callout}
 
 ## Getting help with software
 
 You can find more information on the software available on ARCHER2 in the ARCHER2 Documentation at:
 
-* https://docs.archer2.ac.uk
+* [ARCHER2 Documentation](https://docs.archer2.ac.uk)
 
 This includes information on the software provided by Cray and the software provided by the 
 ARCHER2 CSE Service at EPCC.
