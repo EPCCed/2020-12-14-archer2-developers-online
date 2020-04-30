@@ -10,7 +10,7 @@
 carpentry: "cp"
 
 # Overall title for pages.
-title: "ARCHER2 for software package users"
+title: "Introduction to ARCHER2 for software developers"
 
 # Life cycle stage of the lesson
 # possible values: "pre-alpha", "alpha", "beta", "stable"
