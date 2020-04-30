@@ -22,14 +22,14 @@ root: .
 
 This lesson provides an introduction to using ARCHER2 for user who:
   - have already used other HPC systems; and
-  - want to use pre-installed simulation/modelling packages rather than compiling their own.
+  - want to compile (and possibly) develop HPC software on ARCHER2.
 
 The lesson aims to answer the following questions:
   - What hardware is available on ARCHER2?
     + What does they consist of (login nodes, compute nodes, file systems, backup)?
     + How does this impact me as a user?
   - How can I access ARCHER2 interactively and transfer data?
-  - What does the ARCHER2 software environment look like and how do I access software?
+  - What does the ARCHER2 application development environment look like and how do I use it?
   - How do I write job submission scripts and submit them to the ARCHER2 scheduler?
   - How can I be a good ARCHER2 citizen?
   - How can I check what resources I am using and look at historical usage?
@@ -138,7 +138,8 @@ The lesson aims to answer the following questions:
 > You should have used remote HPC facilities before. In particular, you should be happy with connecting
 > using SSH, know what a batch scheduling system is and be familiar with using the Linux command line.
 > You should also be happy editing plain text files in a remote terminal (or, alternatively, editing them
-> on your local system and copying them to the remote HPC system using `scp`).
+> on your local system and copying them to the remote HPC system using `scp`). Finally, you should be 
+> comfortable with compiling parallel HPC source code that uses MPI and OpenMP.
 {: .prereq}
 
 <hr/>
