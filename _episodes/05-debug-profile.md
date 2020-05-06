@@ -43,7 +43,7 @@ See [the Cray Performance Measurement and Analysis Tools User Guide](https://pub
 
 **TODO** Add exercise on using one or more of the tools (likely gdb4hpc and valgrind4hpc)
 
-## Profiling tools overview
+## Profiling tools overview
 
 Profiling on ARCHER2 is provide through the Cray Performance Measurement and Analysis Tools (CrayPat). This has
 a number of different components:
