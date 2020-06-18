@@ -80,7 +80,7 @@ The lesson aims to answer the following questions:
   <strong>Requirements:</strong> Participants must bring a laptop with a
   Mac, Linux, or Windows operating system (not a tablet, Chromebook, etc.) that they have administrative privileges
   on. They should have a few specific software packages installed (listed
-  <a href="#setup">below</a>). They are also required to abide by the <a href="http://archer.ac.uk/training/code-of-conduct/index.php">ARCHER Training Code of Conduct</a>.
+  <a href="#setup">below</a>). They are also required to abide by the <a href="https://www.archer2.ac.uk/training/code-of-conduct/">ARCHER2 Training Code of Conduct</a>.
 </p>
 
 {% comment %}
