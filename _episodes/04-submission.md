@@ -1,5 +1,5 @@
 ---
-title: "ARCHER2 scheduler: SLURM"
+title: "ARCHER2 scheduler: Slurm"
 teaching: 20
 exercises: 10
 questions:
@@ -7,17 +7,17 @@ questions:
 - "How do I control jobs?"
 - "How do I find out what resources are available?"
 objectives:
-- "Understand the use of the basic SLURM commands."
+- "Understand the use of the basic Slurm commands."
 - "Know what components make up and ARCHER2 scheduler."
 - "Know where to look for further help on the scheduler."
 keypoints:
-- "ARCHER2 uses the SLURM scheduler."
+- "ARCHER2 uses the Slurm scheduler."
 - "`srun` is used to launch parallel executables in batch job submission scripts."
 - "There are a number of different partitions (queues) available."
 ---
 
-ARCHER2 uses the SLURM job submission system, or *scheduler*, to manage resources and how they are made
-available to users. The main commands you should will use with SLURM on ARCHER2 are:
+ARCHER2 uses the Slurm job submission system, or *scheduler*, to manage resources and how they are made
+available to users. The main commands you will use with Slurm on ARCHER2 are:
 
 * `sinfo`: Query the current state of nodes
 * `sbatch`: Submit non-interactive (batch) jobs to the scheduler
@@ -26,7 +26,7 @@ available to users. The main commands you should will use with SLURM on ARCHER2 
 * `salloc`: Submit interactive jobs to the scheduler
 * `srun`: Used within a batch job script or interactive job session to start a parallel program
 
-Full documentation on SLURM on ARCHER2 cn be found in [the *Running Jobs on ARCHER2* section of the User
+Full documentation on Slurm on ARCHER2 cn be found in [the *Running Jobs on ARCHER2* section of the User
 and Best Practice Guide](https://docs.archer2.ac.uk/user-guide/scheduler.html).
 
 ## Finding out what resources are available: `sinfo`
@@ -34,18 +34,12 @@ and Best Practice Guide](https://docs.archer2.ac.uk/user-guide/scheduler.html).
 The `sinfo` command shows the current state of the compute nodes known to the scheduler:
 
 ```
-[auser@archer2-login1 ~]$ sinfo
+auser@login01-nmn:~> sinfo
 ```
 {: .language-bash}
 ```
-PARTITION       AVAIL  TIMELIMIT  NODES  STATE NODELIST
-standard           up 2-00:00:00      1  fail* cn580
-standard           up 2-00:00:00    128  down$ cn[96,579,793,814,1025-1044,1081-1088]
-standard           up 2-00:00:00     26  maint cn[27,93-95,206,232,310,492,568,577-578,585-588,813,815-816,818,846,889,921-924,956]
-standard           up 2-00:00:00      2   fail cn[274,871]
-standard           up 2-00:00:00      4  down* cn[528,614,637,845]
-standard           up 2-00:00:00   1034  alloc cn[1-26,28-38,40-58,62-86,88-92,97-174,176-205,207-231,233-273,275-309,311-333,335-341,344-371,373-376,378-413,415-452,454-489,493-513,515-527,529-532,535-539,541-550,554-561,563-567,569,572-576,581-584,589-595,598-601,603-613,615,617-620,623-631,633-636,638-647,651-659,661-678,680-687,690-695,697-716,718-736,738-775,777-790,792,794-812,817,819-844,847-852,854-870,872-888,890-920,925-955,957-977,980-1014,1016-1020,1023-1024,1045,1047-1070,1072-1080,1089-1105,1107-1152]
-standard           up 2-00:00:00     26   idle cn[61,490-491,540,551-552,562,570,596,602,621,632,648-650,660,688-689,696,853,978-979,1015,1021-1022,1071]
+PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
+workq*       up   infinite      8   idle nid[000001-000008]
 ```
 {: .output}
 
@@ -53,7 +47,8 @@ There is a row for each node state and partition combination. The default output
 
 * `PARTITION` - The system partition (**TODO** confirm partitions on ARCHER2)
 * `AVAIL` - The status of the partition - `up` in normal operation
-* `TIMELIMIT` - Maximum runtime as `days-hours:minutes:seconds`
+* `TIMELIMIT` - Maximum runtime as `days-hours:minutes:seconds`: on ARCHER2, these are set using *QoS*
+  (Quality of Service) rather than on partitions
 * `NODES` - The number of nodes in the partition/state combination
 * `STATE` - The state of the listed nodes (more information below)
 * `NODELIST` - A list of the nodes in the partition/state combination
@@ -70,37 +65,26 @@ The nodes can be in many different states, the most common you will see are:
 
 If you prefer to see the state of individual nodes, you can use the `sinfo -N -l` command.
 
-> The `sinfo -N -l` command will produce a lot of output as there are over 5000 individual 
+> ## Lots to look at!
+> Warning! The `sinfo -N -l` command will produce a lot of output as there are over 5000 individual 
 > nodes on ARCHER2!
 {: .callout}
 
 ```
-[auser@archer2-login1 ~]$ sinfo -N -l
+auser@login01-nmn:~> sinfo -N -l
 ```
 {: .language-bash}
 ```
-NODELIST           NODES       PARTITION       STATE  CPUS    S:C:T MEMORY TMP_DISK WEIGHT AVAIL_FE REASON  
-    cn1                1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn2                1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn3                1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn4                1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn5                1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn6                1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn7                1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn8                1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn9                1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn10               1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn11               1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn12               1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn13               1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn14               1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn15               1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn16               1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn17               1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn18               1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn19               1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn20               1        standard    allocated  128   2:64:1 256800        0      5  standard none                
-    cn21               1        standard    allocated  128   2:64:1 256800        0      5  standard none 
+Fri Jul 10 09:45:54 2020
+NODELIST   NODES PARTITION       STATE CPUS    S:C:T MEMORY TMP_DISK WEIGHT AVAIL_FE REASON              
+nid000001      1    workq*        idle  256   2:64:2 490124        0      1   (null) none                
+nid000002      1    workq*        idle  256   2:64:2 490124        0      1   (null) none                
+nid000003      1    workq*        idle  256   2:64:2 490124        0      1   (null) none                
+nid000004      1    workq*        idle  256   2:64:2 490124        0      1   (null) none                
+nid000005      1    workq*        idle  256   2:64:2 244046        0      1   (null) none                
+nid000006      1    workq*        idle  256   2:64:2 244046        0      1   (null) none                
+nid000007      1    workq*        idle  256   2:64:2 244046        0      1   (null) none                
+nid000008      1    workq*        idle  256   2:64:2 244046        0      1   (null) none  
 
 ...lots of output trimmed...
 
@@ -112,17 +96,23 @@ NODELIST           NODES       PARTITION       STATE  CPUS    S:C:T MEMORY TMP_D
 > command to see the name, CPUs and memory available on the worker nodes (the instructors will give you the ID of
 > the compute node to use):
 > ```
-> [auser@archer2-login1 ~]$ sinfo -n cn1 -o "%n %c %m"
+> [auser@login01-nmn:~> sinfo -n nid000005 -o "%n %c %m"
 > ```
 > {: .language-bash}
 > This should display the resources available for a standard node. Can you use `sinfo` to find out the range of
 > node IDs for the high memory nodes?
 > > ## Solution
-> > The high memory nodes have IDs `cn100-cn300`. You can get this by using:
+> > The high memory nodes have IDs `nid000001-nid000004`. You can get this by using:
+> >
 > > ```
-> > [auser@archer2-login1 ~]$ sinfo -N -l | grep 513200
+> > auser@login01-nmn:~> sinfo -N -l -S "-m" | less
 > > ```
 > > {: .language-bash}
+> >
+> > The `-S "-m"` option tells `sinfo` to print the node list sorted by decreasing memory per node. This
+> > output is then piped into `less` so we can examine the output a page at a time without it scrolling
+> > off the screen.
+> >
 > {: .solution}
 {: .challenge}
 
@@ -130,21 +120,20 @@ NODELIST           NODES       PARTITION       STATE  CPUS    S:C:T MEMORY TMP_D
 
 ### Header section: `#SBATCH`
 
-As for most other scheduler systems, job submission scripts in SLURM consist of a header section with the
+As for most other scheduler systems, job submission scripts in Slurm consist of a header section with the
 shell specification and options to the submission command (`sbatch` in this case) followed by the body of
 the script that actually runs the commands you want. In the header section, options to `sbatch` should 
 be prepended with `#SBATCH`.
 
-Here is a simple example script that runs the `xthi` program that shows process and thread placement across
+Here is a simple example script that runs the `xthi` program, which shows process and thread placement, across
 two nodes.
-
-**TODO** Check options. Is `--exclusive` needed?
 
 ```
 #!/bin/bash
-#SBATCH -job-name=my_mpi_job
+#SBATCH --job-name=my_mpi_job
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=128
+#SBATCH --cpus-per-task=1
 #SBATCH --time=0:10:0
 #SBATCH --account=t01
 
@@ -154,17 +143,20 @@ export OMP_NUM_THREADS=1
 
 # Load modules, etc.
 # srun to launch the executable
-srun --nodes=2 --ntasks-per-node=128 xthi
+srun --cpu-bind=cores xthi
 ```
 {: .language-bash}
 
 The options shown here are:
 
-* `--job-name=my_mpi_job` - Set the name for the job that will be displayed in SLURM output
+* `--job-name=my_mpi_job` - Set the name for the job that will be displayed in Slurm output
 * `--nodes=2` - Select two nodes for this job
-* `--ntasks-per-node=128` - Set 128 parallel processes per node (usually corresponds to MPI ranks) 
+* `--ntasks-per-node=128` - Set 128 parallel processes per node (usually corresponds to MPI ranks)
+* `--cpus-per-task=1` - Number of cores to allocate per parallel process 
 * `--time=0:10:0` - Set 10 minutes maximum walltime for this job
 * `--account=t01` - Charge the job to the `t01` budget
+
+We will discuss the `srun` command further below.
 
 ### Submitting jobs using `sbatch`
 
@@ -172,7 +164,7 @@ You use the `sbatch` command to submit job submission scripts to the scheduler. 
 above script was saved in a file called `test_job.slurm`, you would submit it with:
 
 ```
-[auser@archer2-login1 ~]$ sbatch test_job.slurm
+auser@login01-nmn:~> sbatch test_job.slurm
 ```
 {: .language-bash}
 ```
@@ -180,7 +172,60 @@ Submitted batch job 23996
 ```
 {: .output}
 
-SLURM reports back with the job ID for the job you have submitted
+Slurm reports back with the job ID for the job you have submitted
+
+> ## What are the default for `sbatch` options?
+> If you do not specify job options, what are the defaults for Slurm on ARCHER2? Submit jobs to find out
+> what the defaults are for:
+> 
+> 1. Budget (or Account) the job is charged to?
+> 2. Tasks per node?
+> 3. Number of nodes?
+> 4. Walltime? (This one is hard!)
+> 
+> > ## Solution
+> > 
+> > (1) Budget: None - fails if submitted without a budget specified
+> >
+> > You can get the answers to 2. and 3. this with the following script (once you have realised that you must
+> >specify a budget!):
+> > 
+> > ```
+> > #!/bin/bash
+> > #SBATCH --job-name=my_mpi_job
+> > #SBATCH --account=t01
+> >
+> > echo "Nodes: $SLURM_JOB_NUM_NODES"
+> > echo "Tasks per node: $SLURM_NTASKS_PER_NODE"
+> > module load xthi
+> > 
+> > export OMP_NUM_THREADS=1
+> > 
+> > srun --cpu-bind=cores xthi
+> > ```
+> > {: .language-bash}
+> > 
+> > (2) Tasks per node: 1
+> >
+> > (3) Number of nodes: 1
+> >
+> > Getting the default time limit is more difficult - we need to use `sacct` to query the time limit set for
+> > the job. For example, if the job ID was "12345", then we could query the time limit with:
+> > 
+> > ```
+> > auser@login01-nmn:~> sacct -o "TimeLimit" -j 86
+> > ```
+> > {: .language-bash}
+> > ```
+> >  Timelimit 
+> > ---------- 
+> >  UNLIMITED
+> > ```
+> > {: .output}
+> >
+> > (4) Walltime: Unlimited
+> {: .solution}
+{: .challenge}
 
 ### Checking progress of your job with `squeue`
 
@@ -188,10 +233,11 @@ You use the `squeue` command to show the current state of the queues on ARCHER2.
 will show all jobs in the queue:
 
 ```
-[auser@archer2-login1 ~]$ squeue
+auser@login01-nmn:~> squeue
 ```
 {: .language-bash}
 ```
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
 ```
 {: .output}
 
@@ -200,34 +246,8 @@ will show all jobs in the queue:
 You can use the `scancel` command to cancel jobs that are queued or running. When used on running jobs
 it stops them immediately.
 
-> ## What are the default for `sbatch` options?
-> If you do not specify job options, what are the defaults for SLURM on ARCHER2? Submit jobs to find out
-> what the defaults are for:
-> 
-> Number of nodes?
-> 
-> Tasks per node?
-> 
-> Walltime?
-> 
-> Budget (or Account) the job is charged to?
-> > ## Solution
-> > Defaults are:
-> > 
-> > Number of nodes: 1
-> > 
-> > Tasks per node: 1
-> > 
-> > Walltime: 5 minutes
-> > 
-> > Budget: None - fails if submitted without a budget specified
-> {: .solution}
-{: .challenge}
-
-**TODO** Check defaults for these answers
-
 > ## Getting notified
-> SLURM on ARCHER2 can also send e-mails to notify you when your job starts, ends, fails, etc. Can
+> Slurm on ARCHER2 can also send e-mails to notify you when your job starts, ends, fails, etc. Can
 > you find out how you would setup your job script to send you an e-mail when your job finishes and
 > when it fails? Test your answer, does it work?
 > > ## Solution
@@ -249,38 +269,31 @@ script usually contains commands to:
   not using OpenMP you should set this to `1`)
 
 After this you will usually launch your parallel program using the `srun` command. At its simplest,
-`srun` does not need any arguments (it will use the values supplied to `sbatch` to work out how many
-parallel processes to launch) (**TODO** check this is really the case) but it is usually good 
-practice to explicitly set the number of tasks and the number of tasks per node to ensure that you
-are getting the parallel distribution you expect. In the example above, we want to use all the 
-cores on 4 nodes; as there are 128 cores per node this gives us 512 tasks in total with 128 tasks
-per node. Our `srun` command looks like:
+`srun` only needs 1 argument to specify the correct binding of processes to cores (it will use the
+values supplied to `sbatch` to work out how many parallel processes to launch). In the example above,
+our `srun` command simply looks like:
 
 ```
-srun --nodes=4 --ntasks-per-node=128 xthi
+srun --cpu-bind=cores xthi
 ```
 {: .language-bash}
 
 > ## Underpopulation of nodes
 > You may often want to *underpopulate* nodes on ARCHER2 to access more memory or more memory 
-> bandwidth per task. Can you state the `srun` command and options you would use to run `xthi`:
+> bandwidth per task. Can you state the `sbatch` options you would use to run `xthi`:
 > 
-> On 4 nodes with 64 tasks per node?
-> 
-> On 8 nodes with 2 tasks per node, 1 task per socket?
-> 
-> On 4 nodes with 32 tasks per node, ensuring an even distribution across the 8 NUMA regions
+> 1. On 4 nodes with 64 tasks per node?
+> 2. On 8 nodes with 2 tasks per node, 1 task per socket?
+> 3. On 4 nodes with 32 tasks per node, ensuring an even distribution across the 8 NUMA regions
 > on the node?
 > 
 > Once you have your answers run them in job scripts and check that the binding of tasks to 
 > nodes and cores output by `xthi` is what you expect.
 > 
 > > ## Solution
-> > `srun --nodes=4 --ntasks-per-node=64 xthi`
-> >
-> > `srun --nodes=8 --ntasks-per-node=2 --ntasks-per-socket=1 xthi`
-> >
-> > `srun --nodes=4 --ntasks-per-node=32 --ntasks-per-socket=16 --cores-per-task=4 xthi`
+> > 1. `--nodes=4 --ntasks-per-node=64`
+> > 2. `--nodes=8 --ntasks-per-node=2 --ntasks-per-socket=1`
+> > 3. `--nodes=4 --ntasks-per-node=32 --ntasks-per-socket=16 --cpus-per-task=4`
 > {: .solution}
 {: .challenge}
 
@@ -290,10 +303,12 @@ When running hybrid MPI (with the individual tasks also known as ranks or proces
 (with multiple threads) jobs you need to leave free cores between the parallel tasks launched
 using `srun` for the multiple OpenMP threads that will be associated with each MPI task.
 
-As we saw above, you can use the options to `srun` to control how many parallel tasks are
-placed on each compute node and can use the `--cores-per-task` option to set the stride 
+As we saw above, you can use the options to `sbatch` to control how many parallel tasks are
+placed on each compute node and can use the `--cpus-per-task` option to set the stride 
 between parallel tasks to the right value to accommodate the OpenMP threads - the value
-for `--cores-per-task` should usually be the same as that for `OMP_NUM_THREADS`.
+for `--cpus-per-task` should usually be the same as that for `OMP_NUM_THREADS`. Finally,
+you need to specify `--threads-per-core=1` to ensure that the threads use physical
+cores rather than SMT (hardware threading).
 
 As an example, consider the job script below that runs across 2 nodes with 8 MPI tasks
 per node and 16 OpenMP threads per MPI task (so all 256 cores across both nodes are used).
@@ -302,7 +317,9 @@ per node and 16 OpenMP threads per MPI task (so all 256 cores across both nodes 
 #!/bin/bash
 #SBATCH -job-name=my_hybrid_job
 #SBATCH --nodes=2
-#SBATCH --ntasks-per-node=128
+#SBATCH --ntasks-per-node=8
+#SBATCH --cpus-per-task=16
+#SBATCH --threads-per-core=1
 #SBATCH --time=0:10:0
 #SBATCH --account=t01
 
@@ -312,7 +329,7 @@ export OMP_NUM_THREADS=16
 
 # Load modules, etc.
 # srun to launch the executable
-srun --nodes=2 --ntasks-per-node=8 --cores-per-task=${OMP_NUM_THREADS} xthi
+srun --cpu-bind=cores xthi
 ```
 {: .language-bash}
 
@@ -349,7 +366,7 @@ areas more.
 
 ### Interactive jobs: `salloc` 
 
-Similar to the batch jobs covered above, users can also run interactive jobs using the SLURM
+Similar to the batch jobs covered above, users can also run interactive jobs using the Slurm
 command `salloc`. `salloc` takes the same arguments as `sbatch` but, obviously, these are 
 specified on the command line rather than in a job submission script.
 
@@ -361,32 +378,51 @@ For example, to execute `xthi` across all cores on two nodes (1 MPI task per cor
 OpenMP threading) within an interactive job you would issue the following commands:
 
 ```
-[auser@archer2-login1 ~]$ salloc --nodes=2 --ntasks-per-node=128 --time=0:10:0 --account=t01
+auser@login01-nmn:~> salloc --nodes=2 --ntasks-per-node=128 --cpus-per-task=1 --time=0:10:0 --account=t01
 salloc: Granted job allocation 24236
-salloc: Waiting for resource configuration
-salloc: Nodes cn13 are ready for job
-[auser@archer2-login1 ~]$ module load xthi
-[auser@archer2-login1 ~]$ srun --nodes=2 --ntasks-per-node=128 xthi
+auser@login01-nmn:~> module load xthi
+auser@login01-nmn:~> srun xthi
 ```
 {: .language-bash}
 ```
-**TODO** Add output from xthi
+Hello from rank 242, thread 0, on nid000002. (core affinity = 46,174)
+Hello from rank 249, thread 0, on nid000002. (core affinity = 31,159)
+Hello from rank 225, thread 0, on nid000002. (core affinity = 28,156)
+Hello from rank 231, thread 0, on nid000002. (core affinity = 124,252)
+Hello from rank 233, thread 0, on nid000002. (core affinity = 29,157)
+Hello from rank 234, thread 0, on nid000002. (core affinity = 45,173)
+Hello from rank 240, thread 0, on nid000002. (core affinity = 14,142)
+Hello from rank 246, thread 0, on nid000002. (core affinity = 110,238)
+Hello from rank 248, thread 0, on nid000002. (core affinity = 15,143)
+Hello from rank 251, thread 0, on nid000002. (core affinity = 63,191)
+Hello from rank 252, thread 0, on nid000002. (core affinity = 79,207)
+Hello from rank 223, thread 0, on nid000002. (core affinity = 123,251)
+Hello from rank 71, thread 0, on nid000001. (core affinity = 120,248)
+Hello from rank 227, thread 0, on nid000002. (core affinity = 60,188)
+Hello from rank 243, thread 0, on nid000002. (core affinity = 62,190)
+Hello from rank 250, thread 0, on nid000002. (core affinity = 47,175)
+Hello from rank 53, thread 0, on nid000001. (core affinity = 86,214)
+
+...long output trimmed...
 ```
 {: .output}
 
 Once you hav finished your interactive commands, you exit the interactive job with `exit`:
 
 ```
-[auser@archer2-login1 ~]$ exit
+auser@login01-nmn:~> exit
 exit
 salloc: Relinquishing job allocation 24236
-[auser@archer2-login1 ~]$
+auser@login01-nmn:~>
 ```
 {: .language-bash}
 
+<!-- Need to add information on the solid state storage and Slurm once it is in place
+
 ### Using the ARCHER2 solid state storage
 
-**TODO** Add information on how to use solid state storage once it is known
+-->
+
 
 {% include links.md %}
 
