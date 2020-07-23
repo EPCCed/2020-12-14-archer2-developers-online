@@ -11,7 +11,7 @@ objectives:
 - "Know where to get further help."
 keypoints:
 - "The main debugging tool on ARCHER2 is *gdb4hpc*"
-- "The main profiling tool on ARCHER2 is *CrayPAT*"
+- "The main profiling tool on ARCHER2 is *CrayPat*"
 ---
 
 ARCHER2 has a range of debugging and profiling software available. In this section we provide a brief
@@ -60,7 +60,7 @@ a number of different components:
 
 See [the Cray Performance Measurament and Analysis Tools User Guide](https://pubs.cray.com/bundle/Cray_Performance_Measurement_and_Analysis_Tools_Installation_Guide_632_S-2474/page/Use_CrayPat_CrayPat-lite_Apprentice2_or_Reveal.html) 
 
-## Using CrayPAT Lite to profile an application
+## Using CrayPat Lite to profile an application
 Let's grab and unpack a toy code for training purposes. To do this, we’ll use `wget`.
 
 ```
@@ -74,7 +74,7 @@ To extract the files from a `.tar.gz` file, we run the command `tar -xvf filenam
 ```
 {: .bash}
 
-Load CrayPAT-lite module (`perftools-lite`)
+Load CrayPat-lite module (`perftools-lite`)
 ```
 [auser@archer2-login1 ~]$ module load perftools-lite
 ```
@@ -157,9 +157,9 @@ I/O Write Rate:   9.319690 MiBytes/sec
 ```	
 {: .output}
 
-## Using CrayPAT to profile an application
+## Using CrayPat to profile an application
 
-We are now going to use the full CrayPAT tools. To do so, we first need to load the required modules
+We are now going to use the full CrayPat tools. To do so, we first need to load the required modules
 
 ```
 [auser@archer2-login1 ~]$  module unload perftools-lite
