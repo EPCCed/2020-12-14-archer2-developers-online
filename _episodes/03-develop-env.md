@@ -270,7 +270,7 @@ with different versions and swaps them for you.
 
 ## Switching between compiler environments
 
-You use the `module swap` command to switch between the three different compiler environments available
+You use the `module swap` command to switch between the two different compiler environments available
 on ARCHER2. The available environments are:
 
 * Cray Compiling Environment (CCE): `PrgEnv-cray`
