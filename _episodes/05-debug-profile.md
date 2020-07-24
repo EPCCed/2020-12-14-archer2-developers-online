@@ -43,6 +43,142 @@ See [the Cray Performance Measurement and Analysis Tools User Guide](https://pub
 
 **TODO** Add exercise on using one or more of the tools (likely gdb4hpc and valgrind4hpc)
 
+## Using gdb4hpc to debug an application
+
+For this exercise, we'll be debugging a short program using gdb4hpc. To start, we'll grab a copy of a buggy code from ARCHER2:
+
+```bash
+cp -r /work/shared/debug_tutorial/ ./
+```
+
+You can look at the code if you want -- you might even be able to debug it by inspection (but that defeats the purpose of this exercise). When you're ready, compile the code using the C compiler wrappers and the debugging flag `-g`:
+
+```bash
+ cc -g buggy_script.c -o my_exe
+ ```
+
+You can choose a different name for your executable, but I'll be using `my_exe` through this exercise for consistency -- if you use a different name, make the appropriate change wherever you see `my_exe`.
+
+We'll be using ``gdb4hpc`` to go through this program and see where errors might arise.
+
+Launch ``gdb4hpc``:
+
+```bash
+ gdb4hpc
+```
+    
+You will get some information about this version of the program and, eventually, you will get a command prompt:
+
+```
+ gdb4hpc 4.5 - Cray Line Mode Parallel Debugger
+ With Cray Comparative Debugging Technology.
+ Copyright 2007-2019 Cray Inc. All Rights Reserved.
+ Copyright 1996-2016 University of Queensland. All Rights Reserved.
+ Type "help" for a list of commands.
+ Type "help <cmd>" for detailed help about a command.
+ dbg all>
+```
+  
+We will use ``launch`` to start an application within gdb4hpc. For now, we want to run our simulation on a single process, so we will type:
+
+```bash
+ dbg all> launch $my_prog{1} ./my_exe
+```
+    
+This will launch an ``srun`` job on one of the compute nodes. The number in the brackets ``{1}`` indicates the number of processes this job will be using (it's  1 here). You could use a larger number if you wanted. If you call for more processors than available on a single compute node, `gdb4hpc` will launch the program on an appropriate number of nodes. Note though that the more cores you ask for, the slower `gdb4hpc` will be.
+
+Once the program is launched, gdb4hpc will load up the program and begin to run it. You will get output to screen something that looks like:
+
+```
+Starting application, please wait...
+Creating MRNet communication network...
+Waiting for debug servers to attach to MRNet communications network...
+Timeout in 400 seconds. Please wait for the attach to complete.
+Number of dbgsrvs connected: [0];  Timeout Counter: [1]
+Number of dbgsrvs connected: [0];  Timeout Counter: [2]
+Number of dbgsrvs connected: [1];  Timeout Counter: [0]
+Finalizing setup...
+Launch complete.
+my_prog{0}: Initial breakpoint, main at /PATH/TO/gdb4hpc_exercise.c:7
+```
+    
+The line number at which the initial breakpoint is made (in the above example, line 7) corresponds to the first line within the `main` function.
+
+Once the code is loaded, you can use various commands to move through your code. The following lists and describes some of the most useful ones:
+
+* ``help`` -- Lists all gdb4hpc commands. You can run ``help COMMAND_NAME`` to learn more about a specific command (*e.g.* ``help launch`` will tell you about the launch command
+* ``list`` -- Will show the current line of code and the 9 lines following. Repeeated use of ``list`` will move you down the code in ten-line chunks.
+* ``next`` -- Will jump to the next step in the program for each process and output which line of code each process is one. It will not enter subroutines. Note that there is no reverse-step in gdb4hpc.
+* ``step`` -- Like ``next``, but this will step into subroutines.
+* ``up`` -- Go up one level in the program (*e.g.* from a subroutine back to main).
+* ``print var`` -- Prints the value of variable ``var`` at this point in the code.
+* ``watch var`` -- Like print, but will print whenever a variable changes value.
+* ``quit`` -- Exits gdb4hpc.
+
+For now, we will look at `list`, `next`, `print`, and `watch`. Running:
+
+```bash
+ dbg all> list
+```
+
+should output the first 10 lines of `main`:
+
+```
+ my_prog{0}: 7	
+ my_prog{0}: 8	  // Initiallise MPI environment
+ my_prog{0}: 9	  MPI_Init(NULL,NULL);
+ my_prog{0}: 10	
+ my_prog{0}: 11	  // Get processor rank
+ my_prog{0}: 12	  int rank;
+ my_prog{0}: 13	  MPI_Comm_rank(MPI_COMM_WORLD,&rank);
+ my_prog{0}: 14	
+ my_prog{0}: 15	  int count = rank + 1;
+ my_prog{0}: 16	
+```
+
+Repeating `list` will bring show you the next 10 lines, *etc.*.
+
+At the moment, we are at the start of the program. By running `next`, we will move to the next executable part of the program@
+
+```bash
+ dbg all> next
+```
+```
+ my_prog{0}: main at /PATH/TO/gdb4hpc_exercise.c:11
+```
+
+Running `list` again will output the ten lines from 11-20. We can jump forward multiple lines by running `next N` -- by replacing *N* with a number, we will jump down *N* executable lines within our code. The `next` command will not allow us to move from one subroutine or function to another.
+
+We can see on line 15 that there is a variable `count` about to be set. If we type:
+
+```bash
+ dbg all> print count
+```
+
+The current value of variable `count` is printed to screen. If we progress the code to line 16 and print this variable value again, it has changed to 1. If we wanted, we could have used the `watch` command to get a notification whenever the value of the variable changes.
+
+> ### Exercise
+> What happens if you keep using `next` and `list`?
+>> ### Solution
+>> The program will move from executable line to executable line until it reaches line 18, at which point the program is exited due to an MPI error
+
+Let's now try launching across multiple processors:
+
+
+```bash
+ dbg all> launch $my_prog{2} ./my_exe
+```
+
+> ### Exercise
+> The code seems to be trying to send the variable `count` from one process to another. Follow `count` and see how it changes throughout the code. What happens?
+>> ### Solution
+>> After line 20, one of the processors stops sending a value for `count`. This is because the processor is waiting to receive a value for `count` from an `MPI_Send` process that doesn't exist.
+
+Let's `quit` our program, fix that bug, and go back in.
+
+**TODO** Eternal while error
+**TODO** How to close a run? 
+
 ## Profiling tools overview
 
 Profiling on ARCHER2 is provide through the Cray Performance Measurement and Analysis Tools (CrayPat). This has
