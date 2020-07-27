@@ -18,7 +18,7 @@ SAFE is a web-based tool developed by EPCC that allows you to:
 * Manage your ARCHER2 account
 * Record research outputs linked to your use of ARCHER2
 * Look at your historical use of ARCHER2 service
-* (If you are a project leader/manager.) Manage your project's resources on ARCHER2
+* (If you are a project leader/manager) Manage your project's resources on ARCHER2
 
 You should already have used SAFE to apply for your ARCHER2 user account for this course. In
 this section we will look at how you use SAFE for common tasks associated with your use of
@@ -27,7 +27,7 @@ ARCHER2.
 More information on using SAFE can be found in
 [the SAFE User Guide](https://www.archer2.ac.uk/documentation/safe-guide/)
 
-## Account management
+## Account management
 
 You will have at least two accounts associated with your use of ARCHER2: an account on the
 SAFE web tool and ARCHER2 login (sometimes called *machine*) accounts.
@@ -42,7 +42,7 @@ SAFE web tool and ARCHER2 login (sometimes called *machine*) accounts.
 We will not document the full use of SAFE here but will mention a few of the most useful
 options with managing your different accounts.
 
-### Your SAFE account
+### Your SAFE account
 
 Your SAFE account is used to allow you to manage your login accounts and resources, set
 contact details and preferences, record research outputs associated with your use of the
@@ -64,7 +64,7 @@ lists associated with the ARCHER2 service and you can subscribe to any combinati
 You can change your preferences in SAFE by use the *Your details - Update email settings*
 menu option. You can then select the mailing lists you wish to subscribe to.
 
-### Your ARCHER2 login account(s)
+### Your ARCHER2 login account(s)
 
 There can be multiple login accounts associated with a single SAFE account. Each of these
 accounts will be listed in the *Login accounts* menu. Selecting a particular login account
@@ -76,7 +76,7 @@ of the systems it has access to, the resources (both compute allocations and sto
 available and used, and lists of licensed software that the account has access to.
 
 **Picking up your initial login password**. When your login account is first created you
-will pick up your intial, single-use password from the *View login password* button on
+will pick up your initial, single-use password from the *View login password* button on
 the appropriate login account page. When you use this password to log in to ARCHER2, you
 will be immediately asked to change this.
 
@@ -91,6 +91,12 @@ it for any other reason, you can use the *Request Password Reset* button to ask 
 a new single-use password to log into the service. You will be notified by e-mail once
 the new password is available for you to pick up and you use it exactly the same way
 as your initial password.
+
+**Adding SSH keys to your account**. To log into ARCHER2 you need to use both a password
+and an key pair SSH protected by a strong passphrase. Once you have generated your 
+SSH key pair you use SAFE to associate the public part of the key pair with your account.
+Use the *Add credential* button and then select the *SSH key* option to associate the
+public part of the key pair with your account.
 
 **Requesting access to licensed software**. If you wish to access particular licensed
 software on ARCHER2 you can request access by using the *Request Access to Package*
@@ -120,7 +126,9 @@ Usually, you will run them using the *Preview* button to display the output in t
 web browser and provide the interface to change report parameters so you can 
 explore your use of the system.
 
-**TODO** Add exercise on running report
+<!-- TODO: Add exercise on running SAFE report on usage once these are available.
+Will SAFE get the data from jobs run on the course soon enough to be able to use
+this as an example? If not, use a generic report. -->
 
 {% include links.md %}
 

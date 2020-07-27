@@ -19,7 +19,7 @@ keypoints:
 
 The login node is often very busy managing lots of users logged in, creating and editing files
 and compiling software. It does not have any extra space to run computational work and you will
-get poor performance if oyu try to use it for computational work.
+get poor performance if you try to use it for computational work.
 
 Do not run jobs on the login node (though quick tests are generally fine). A “quick test” is
 generally anything that uses less than 5 minutes of time. If you
@@ -41,12 +41,20 @@ with the *PID* to terminate any processes that are using large amounts of resour
 > ## Login Node Etiquette
 > 
 > Which of these commands would probably be okay to run on the login node?
-> python physics_sim.py
-> make
-> create_directories.sh
-> molecular_dynamics_2
-> tar -xzf R-3.3.0.tar.gz
 > 
+> 1. python physics_sim.py
+> 2. make
+> 3. create_directories.sh
+> 4. molecular_dynamics_2
+> 5. tar -xzf R-3.3.0.tar.gz
+> >
+> > ## Solution
+> > 1. Likely not OK - the name of the python program indicates it may run a resource intensive simulation.
+> > 2. OK - the login nodes can be used for building software unless the compiles take a very long time.
+> > 3. OK - A shell script used to manage data will usually be fine to run on the login nodes.
+> > 4. Likely not OK - the name of the program implies that it may run a resource intensive simulation.
+> > 5. OK - Expanding small data archives would usually be fine on the login nodes. Extracting very large
+> >    data archives may be better suited to running on a data analysis node.
 {: .challenge}
 
 If you experience performance issues with a login node you should report it to the
@@ -58,13 +66,12 @@ connections will be killed.
 
 ## Do not share your login credentials
 
-You should not share your login details (account name and password) with anyone else. If 
-we detect evidence of account sharing of this form we will require you to reset your password
-and choose a new password.
+You should not share your login details (account name, passwords or SSH keys) with anyone else. If 
+we detect evidence of account sharing of this form we will require you to reset your access credentials.
 
 Accessing another ARCHER2 user account from your account is also not allowed (as this would
 allow you to potentially capture the credentials for the other account). If we detect this
-behaviour we will require both people involved to reset their login account passwords.
+behaviour we will require both people involved to reset their access credentials.
 
 ## Test before scaling
 
@@ -82,19 +89,19 @@ of starting due to a trivial typo in the job script. This is extremely frustrati
 use the ARCHER2 test queues to run short correctness tests on your job scripts before submitting
 the full calculation.
 
-**TODO** Add in syntax on ARCHER2 test queues
+<!-- TODO: Add in syntax for ARCHER2 test and development queues -->
 
 > ## Test job submission scripts that use large amounts of resource
 > Before submitting a large run of jobs, submit one as a test first to make sure everything works
 > as expected.
 >
 > Before submitting a very large or very long job submit a short truncated test to ensure that
-> the job starts as expected
+> the job starts as expected.
 {: .callout}
 
 ## Have a backup plan
 
-Although the ARCHER2 /home file systems are backed up, the /work file systems are not
+Although the ARCHER2 /home file systems are backed up, the /work file systems are not,
 and /home is only backed up for disaster recovery purposes (*i.e.* for restoring the
 whole file system if lost rather than an individual file or directory you have deleted by mistake).
 Your data on ARCHER2 is primarily your responsibility and you should ensure you have secure copies of data
