@@ -61,28 +61,28 @@ a number of different components:
 See [the Cray Performance Measurament and Analysis Tools User Guide](https://pubs.cray.com/bundle/Cray_Performance_Measurement_and_Analysis_Tools_Installation_Guide_632_S-2474/page/Use_CrayPat_CrayPat-lite_Apprentice2_or_Reveal.html) 
 
 ## Using CrayPat Lite to profile an application
-Let's grab and unpack a toy code for training purposes. To do this, we’ll use `wget`.
+Let's grab and unpack a toy code for training purposes. To do this, we'll use `wget`.
 
 ```
-[auser@archer2-login1 ~]$  wget {{site.url}}{{site.baseurl}}/files/nbody-par.tar.gz
+auser@login01-nmn:~>  wget {{site.url}}{{site.baseurl}}/files/nbody-par.tar.gz
 ```
 {: .language-bash}
 
 To extract the files from a `.tar.gz` file, we run the command `tar -xvf filename.tar.gz`:
 ```
-[auser@archer2-login1 ~]$ tar -xzf n body-par.tar.gz
+auser@login01-nmn:~> tar -xzf n-body-par.tar.gz
 ```
 {: .bash}
 
 Load CrayPat-lite module (`perftools-lite`)
 ```
-[auser@archer2-login1 ~]$ module load perftools-lite
+auser@login01-nmn:~> module load perftools-lite
 ```
 {: .bash}
 
 and compile the application normally
 ```
-[auser@archer2-login1 ~]$ make
+auser@login01-nmn:~> make
 ```
 {: .bash}
 ```
@@ -106,15 +106,17 @@ As the output of the compilation says, the executable `nbody-parallel.exe` has b
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=64
 #SBATCH --cpus-per-task=1
+#SBATCH --output=slurm-out.txt
+
 export OMP_NUM_THREADS=1
 
 srun --cpu-bind=cores ./nbody-parallel.exe -n 10240 -i 10 -t 1
 ```
  {: .language-bash}
 
-Once our job has finished, we can get the erformance data summarized at the end of the job STDOUT.
+Once our job has finished, we can get the performance data summarized at the end of the job STDOUT.
 ```
-[auser@archer2-login1 ~]$ less slurm-929.out
+auser@login01-nmn:~> less slurm-out.txt
 ```
  {: .language-bash}
 ```
@@ -124,7 +126,7 @@ N Bodies =                     10240
 Timestep dt =                  2.000e-01
 Number of Timesteps =          10
 Number of MPI Ranks =          64
-BEGINNING N-BODY SIMLUATION
+BEGINNING N-BODY SIMULATION
 SIMULATION COMPLETE
 Runtime [s]:              6.759e+00
 Runtime per Timestep [s]: 6.759e-01
@@ -162,20 +164,20 @@ I/O Write Rate:   9.319690 MiBytes/sec
 We are now going to use the full CrayPat tools. To do so, we first need to load the required modules
 
 ```
-[auser@archer2-login1 ~]$  module unload perftools-lite
-[auser@archer2-login1 ~]$  module load perftools
+auser@login01-nmn:~>  module unload perftools-lite
+auser@login01-nmn:~>  module load perftools
 ```
 {: .language-bash}
 
 After loading the modules, we need to recompile the application
 ```
-[auser@archer2-login1 ~]$ make clean; make
+auser@login01-nmn:~> make clean; make
 ```
 {: .bash}
 
 Once the application has been built, we need to instrument the binary. We do this with `pat_build`
 ```
-[auser@archer2-login1 ~]$ pat_build nbody-parallel.exe
+auser@login01-nmn:~> pat_build nbody-parallel.exe
 ```
 {: .bash}
 
@@ -199,14 +201,14 @@ srun --cpu-bind=cores ./nbody-parallel.exe+pat -n 10240 -i 10 -t 1
 
 After the job has finished, a new directory called `nbody-parallel.exe+pat+...` will be created. It is now time to obtain the performance report. We do this with the `pat_report` command and the new created directory
 ```
-[auser@archer2-login1 ~]$ pat_report nbody-parallel.exe+pat+189193-3s
+auser@login01-nmn:~> pat_report nbody-parallel.exe+pat+189193-3s
 ```
 {: .bash}
 
 This will command generate a full performance report and can generate a large amount of data, so you may wish to capture the data in an output file, either using a shell redirect like `>`,  or we could choose to see only some reports. If we want to see only a profile report by function we can do
 
 ```
-[auser@archer2-login1 ~]$ pat_report -v -O samp_profile nbody-parallel.exe+pat+189193-3s/
+auser@login01-nmn:~> pat_report -v -O samp_profile nbody-parallel.exe+pat+189193-3s/
 ```
 {: .bash}
 
@@ -237,13 +239,13 @@ Table 1:  Profile by Function
 ```
 {: .output}
 
-The table above shows the results from sampling the application. Program functions are separated out into different types, `USER` functions are those defined by the application, `MPI` functions contains the time spent in MPI library functions, `ETC`  functions are generally library or miscellaneous functions included. `ETC` functions can include a variety of external functions, from mathematical functions called in by the library to system calls.
+The table above shows the results from sampling the application. Program functions are separated out into different types, `USER` functions are those defined by the application, `MPI` functions contains the time spent in MPI library functions, `ETC` functions are generally library or miscellaneous functions included. `ETC` functions can include a variety of external functions, from mathematical functions called in by the library to system calls.
 
 The raw number of samples for each code section is shown in the second column and the number as an absolute percentage of the total samples in the first. The third column is a measure of the imbalance between individual processors being sampled in this routine and is calculated as the difference between the average number of samples over all processors and the maximum samples an individual processor was in this routine.
 
 Another useful table can be obtained profiling by Group, Function, and Line
 ```
-[auser@archer2-login1 ~]$ pat_report -v -O samp_profile+src nbody-parallel.exe+pat+189193-3s/
+auser@login01-nmn:~> pat_report -v -O samp_profile+src nbody-parallel.exe+pat+189193-3s/
 ```
 {: .bash}
 
@@ -288,7 +290,7 @@ Table 3:  Profile by Group, Function, and Line
 
 If we want to profile by Function and Callers, with Line Numbers then
 ```
-[auser@archer2-login1 ~]$ pat_report -O ca+src nbody-parallel.exe+pat+189193-3s/
+auser@login01-nmn:~> pat_report -O ca+src nbody-parallel.exe+pat+189193-3s/
 ```
 {: .bash}
 
@@ -352,7 +354,7 @@ pat_build -O nbody-parallel.exe+pat+189193-3s/build-options.apa
 This will produce a third binary with extension `+apa`. This binary should once again be run on the back end, so the submission script should be modified and the name of the executable changed to `nbody-parallel.exe+apa`.
 A new directory `nbody-parallel.exe+apa+...`  will be generated by the application, which should be processed by the `pat_report` tool. As this is now a tracing experiment it will provide more information than before
 ```
-[auser@archer2-login1 ~]$ pat_report nbody-parallel.exe+apa+69935-4t
+auser@login01-nmn:~> pat_report nbody-parallel.exe+apa+69935-4t
 ```
 {: .bash}
 
@@ -388,7 +390,7 @@ The new table above is the version generated from tracing data instead of the pr
 
 We can also get very important performance data from the hardware (HW) counters
 ```
-[auser@archer2-login1 ~]$ pat_report -v -O profile+hwpc nbody-parallel.exe+apa+69935-4t
+auser@login01-nmn:~> pat_report -v -O profile+hwpc nbody-parallel.exe+apa+69935-4t
 ```
 {: .bash}
 ```
@@ -423,7 +425,6 @@ Group / Function / PE=HIDE
   CrayPat Overhead : Time          0.2%
 ==============================================================================
 ```
-
 {: .output}
 
 ## Getting help with debugging and profiling tools
