@@ -157,34 +157,14 @@ We can see on line 15 that there is a variable `count` about to be set. If we ty
 
 The current value of variable `count` is printed to screen. If we progress the code to line 16 and print this variable value again, it has changed to 1. If we wanted, we could have used the `watch` command to get a notification whenever the value of the variable changes.
 
-> ## Exercise
+> ### Exercise
 > What happens if you keep using `next` and `list`?
-> > ## Solution
+> > ### Solution
 > > The program will move from executable line to executable line until it reaches line 18, at which point the program is exited due to an MPI error
 > {: .solution}
 {: .challenge}
 
 Let's now try launching across multiple processors:
-
-> ## Picking a good password
-> Which of these passwords would be a good, valid choice according to the ARCHER2 Password
-> Policy?
-> 
-> 1. `mypassword`
-> 2. `rainbowllamajumping`
-> 3. `A!94ufskl$?`
-> 4. `horsebatterystaple`
-> 
-> > ## Solution
-> >
-> > 1. **No** This would not be accepted or a good choice as it is too short and is made up of obvious words
-> > 2. **Yes** This would be a good choice as it is long enough and easy to remember
-> > 3. **Yes** This would be accepted but may be difficult to remember and type (though you could use a password manager to store it)
-> > 4. **No** While this meets the criteria, it is a well known example from a popular web comic and so would not be accepted
-> >
-> {: .solution}
-{: .challenge}
-
 
 ```bash
  dbg all> launch $my_prog{2} ./my_exe
@@ -192,8 +172,8 @@ Let's now try launching across multiple processors:
 
 > ### Exercise
 > The code seems to be trying to send the variable `count` from one process to another. Follow `count` (using `watch`) and see how it changes throughout the code. What happens?
->> ### Solution
->> Eventually, both processes will hang: process 0 hangs at an `MPI_Barrier` on line 19 and is stuck waiting for process 1 to reach its barrier. Process 1 is stuck at an `MPI_Recv` on line 21. Further investigation shows that it is waiting for an `MPI_Send` that does not exist -- the source is process 1 (which has not sent anything) and the tag is `1` (there is no MPI_Send with this tag). 
+> > ### Solution
+> > Eventually, both processes will hang: process 0 hangs at an `MPI_Barrier` on line 19 and is stuck waiting for process 1 to reach its barrier. Process 1 is stuck at an `MPI_Recv` on line 21. Further investigation shows that it is waiting for an `MPI_Send` that does not exist -- the source is process 1 (which has not sent anything) and the tag is `1` (there is no MPI_Send with this tag). 
 > {: .solution}
 {: .challenge}
 
@@ -208,8 +188,8 @@ This time, instead of `next`, we will use `step` -- this does the same as `next`
 
 > ### Exercise
 > Having `step`ed into the `sum_even` function, can you find where the code hangs?
->> ### Solution
->> The `i++` should be brought outside of the `if` part of the `while` loop. Changing this will make the code work fully.
+> > ### Solution
+> > The `i++` should be brought outside of the `if` part of the `while` loop. Changing this will make the code work fully.
 > {: .solution}
 {: .challenge}
 
