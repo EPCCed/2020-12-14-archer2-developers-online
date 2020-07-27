@@ -20,9 +20,9 @@ The ARCHER2 login address is
 ```
 login.archer2.ac.uk
 ```
-{: .bash}
+{: .language-bash}
 
-Access to ARCHER2 is via SSH using either password or SSH key pair.
+Access to ARCHER2 is via SSH using **both** a password and a passphrase-protected SSH key pair.
 
 ## Passwords and password policy
 
@@ -32,26 +32,34 @@ password must have the required complexity as specified in the
 [ARCHER2 Password Policy](https://www.archer2.ac.uk/about/policies/passwords_usernames.html).
 
 The password policy has been chosen to allow users to use both complex, shorter passwords and
-long, but comparatively simple passwords. For example both `LA10!£lsty` and `horsebatterystaple`
-would be supported.
+long, but comparatively simple passwords. For example, passwords in the style of both
+`LA10!£lsty` and `horsebatterystaple` would be supported.
 
 > ## Picking a good password
 > Which of these passwords would be a good, valid choice according to the ARCHER2 Password
 > Policy?
-> * `rainbowllamajumping`
-> * `horsebatterystaple`
 > 
+> 1. `mypassword`
+> 2. `rainbowllamajumping`
+> 3. `A!94ufskl$?`
+> 4. `horsebatterystaple`
+> 
+> > ## Solution
+> >
+> > 1. **No** This would not be accepted or a good choice as it is too short and is made up of obvious words
+> > 2. **Yes** This would be a good choice as it is long enough and easy to remember
+> > 3. **Yes** This would be accepted but may be difficult to remember and type (though you could use a password manager to store it)
+> > 4. **No** While this meets the criteria, it is a well known example from a popular web comic and so would not be accepted
+> >
+> {: .solution}
 {: .challenge}
 
 ## SSH keys
 
-As well as password access, users can add the public part of an SSH key pair to access ARCHER2.
-Once you are able to log in using your password you can append the public part of an SSH key 
-pair to the `~/.ssh/authorized_keys` file on ARCHER2 to allow you to access the system using 
-SSH keys.
-
-The ARCHER2 User and Best Practice Guide has more information on how to create SSH key pairs
-and how to use SSH Agents to make access more convenient while remaining secure. See:
+As well as password access, users are required to add the public part of an SSH key pair to access ARCHER2.
+The public part of the key pair is associated with your account using the SAFE web interface.
+See the ARCHER2 User and Best Practice Guide for information on how to create SSH key pairs
+and associate them with your account:
 
 * [Connecting to ARCHER2](https://docs.archer2.ac.uk/user-guide/connecting.html)
 
@@ -94,16 +102,29 @@ Here are the main points you should consider:
 * **Be aware of encryption overheads.** When transferring data using `scp` (and `rsync` over `scp`)
   your data will be encrypted introducing a static overhead per file. This issue can be minimised by
   reducing the number files to be transferred by creating archives. You can also change the encryption
-  algorithm to one that involves minimal encryption. (**TODO** Check what minimal ciphers are available
-  on ARCHER2 as arcfour may be disabled in newer OpenSSL.)
+  algorithm to one that involves minimal encryption. The fastest performing cipher that is commonly 
+  available in SSH at the moment is generally `aes128-ctr` as most common processors provide a
+  hardware implementation.
 
 > ## Creating an uncompressed zip archive and verifying the contents
 > Using the documentation above, find the command you would use to create an uncompressed zip archive
 > file of all data within a directory called `large_data_output/`. What command would you use to verify
 > that the archive file you have created is not corrupt so you can safely delete the original data?
+> > ## Solution
+> > You use the `zip` command to archive the data. The `-r` option is used to perform the operation
+> > recursively on a directory and the `-0` option is used to specify the archive should be uncompressed:
+> > ```
+> > auser@login01-nmn:~> zip -0r large_data_output.zip large_data_output/
+> > ```
+> > {: .language-bash}
+> > To verify the archive is valid, you would use the `zip` command again, this time with the `-t` 
+> > option:
+> > ```
+> > auser@login01-nmn:~> zip -t large_data_output.zip
+> > ```
+> > {: .language-bash}
+> {: .solution}
 {: .challenge}
-
-**TODO** Add the answer for the challenge
 
 {% include links.md %}
 
