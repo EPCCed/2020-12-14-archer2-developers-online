@@ -170,14 +170,23 @@ Let's now try launching across multiple processors:
 ```
 
 > ### Exercise
-> The code seems to be trying to send the variable `count` from one process to another. Follow `count` and see how it changes throughout the code. What happens?
+> The code seems to be trying to send the variable `count` from one process to another. Follow `count` (using `watch`) and see how it changes throughout the code. What happens?
 >> ### Solution
->> After line 20, one of the processors stops sending a value for `count`. This is because the processor is waiting to receive a value for `count` from an `MPI_Send` process that doesn't exist.
+>> Eventually, both processes will hang: process 0 hangs at an `MPI_Barrier` on line 19 and is stuck waiting for process 1 to reach its barrier. Process 1 is stuck at an `MPI_Recv` on line 21. Further investigation shows that it is waiting for an `MPI_Send` that does not exist -- the source is process 1 (which has not sent anything) and the tag is `1` (there is no MPI_Send with this tag). 
 
-Let's `quit` our program, fix that bug, and go back in.
+Let's `quit` our program, fix that bug, and go back into `gdb4hpc`. Again, we'll launch our program on 2 processors, and again, we'll watch the variable `count`. This time, both processes are able to get the same value for the variable `count`. There is one final part of the code to look at -- process 1 will try to get the sum of all even numbers between 0 and 20. However, the program begins to hang when process 1 reached line 28 (process 0 also hangs, but it's already at the `MPI_Finalise` part of the routine so we don't need to worry about it). Once we reach this hang, we can't easily keep going. Let's stop this debugging session and restart it by using `release`:
 
-**TODO** Eternal while error
-**TODO** How to close a run? 
+```bash
+ dbg all> release $my_prog
+ dbg all > launch $my_new_prog{2} ./my_exe
+```
+
+This time, instead of `next`, we will use `step` -- this does the same as `next` with the added feature that we can go into functions and subroutines where applicable. As the new bug appears to come from the `sum_even` function, let's see where exactly the program hangs.
+
+> ### Exercise
+> Having `step`ed into the `sum_even` function, can you find where the code hangs?
+>> ### Solution
+>> The `i++` should be brought outside of the `if` part of the `while` loop. Changing this will make the code work fully.
 
 ## Profiling tools overview
 
