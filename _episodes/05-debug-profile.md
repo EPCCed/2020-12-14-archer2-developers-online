@@ -64,6 +64,7 @@ We'll be using ``gdb4hpc`` to go through this program and see where errors might
 Launch ``gdb4hpc``:
 
 ```bash
+ module load gdb4hpc
  gdb4hpc
 ```
     
