@@ -161,6 +161,8 @@ The current value of variable `count` is printed to screen. If we progress the c
 > What happens if you keep using `next` and `list`?
 >> ### Solution
 >> The program will move from executable line to executable line until it reaches line 18, at which point the program is exited due to an MPI error
+> {: .solution}
+{: .challenge}
 
 Let's now try launching across multiple processors:
 
@@ -173,6 +175,8 @@ Let's now try launching across multiple processors:
 > The code seems to be trying to send the variable `count` from one process to another. Follow `count` (using `watch`) and see how it changes throughout the code. What happens?
 >> ### Solution
 >> Eventually, both processes will hang: process 0 hangs at an `MPI_Barrier` on line 19 and is stuck waiting for process 1 to reach its barrier. Process 1 is stuck at an `MPI_Recv` on line 21. Further investigation shows that it is waiting for an `MPI_Send` that does not exist -- the source is process 1 (which has not sent anything) and the tag is `1` (there is no MPI_Send with this tag). 
+> {: .solution}
+{: .challenge}
 
 Let's `quit` our program, fix that bug, and go back into `gdb4hpc`. Again, we'll launch our program on 2 processors, and again, we'll watch the variable `count`. This time, both processes are able to get the same value for the variable `count`. There is one final part of the code to look at -- process 1 will try to get the sum of all even numbers between 0 and 20. However, the program begins to hang when process 1 reached line 28 (process 0 also hangs, but it's already at the `MPI_Finalise` part of the routine so we don't need to worry about it). Once we reach this hang, we can't easily keep going. Let's stop this debugging session and restart it by using `release`:
 
@@ -187,6 +191,8 @@ This time, instead of `next`, we will use `step` -- this does the same as `next`
 > Having `step`ed into the `sum_even` function, can you find where the code hangs?
 >> ### Solution
 >> The `i++` should be brought outside of the `if` part of the `while` loop. Changing this will make the code work fully.
+> {: .solution}
+{: .challenge}
 
 ## Profiling tools overview
 
