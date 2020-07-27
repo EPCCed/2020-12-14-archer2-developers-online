@@ -157,14 +157,33 @@ We can see on line 15 that there is a variable `count` about to be set. If we ty
 
 The current value of variable `count` is printed to screen. If we progress the code to line 16 and print this variable value again, it has changed to 1. If we wanted, we could have used the `watch` command to get a notification whenever the value of the variable changes.
 
-> ### Exercise
+> ## Exercise
 > What happens if you keep using `next` and `list`?
->> ### Solution
->> The program will move from executable line to executable line until it reaches line 18, at which point the program is exited due to an MPI error
+> > ## Solution
+> > The program will move from executable line to executable line until it reaches line 18, at which point the program is exited due to an MPI error
 > {: .solution}
 {: .challenge}
 
 Let's now try launching across multiple processors:
+
+> ## Picking a good password
+> Which of these passwords would be a good, valid choice according to the ARCHER2 Password
+> Policy?
+> 
+> 1. `mypassword`
+> 2. `rainbowllamajumping`
+> 3. `A!94ufskl$?`
+> 4. `horsebatterystaple`
+> 
+> > ## Solution
+> >
+> > 1. **No** This would not be accepted or a good choice as it is too short and is made up of obvious words
+> > 2. **Yes** This would be a good choice as it is long enough and easy to remember
+> > 3. **Yes** This would be accepted but may be difficult to remember and type (though you could use a password manager to store it)
+> > 4. **No** While this meets the criteria, it is a well known example from a popular web comic and so would not be accepted
+> >
+> {: .solution}
+{: .challenge}
 
 
 ```bash
