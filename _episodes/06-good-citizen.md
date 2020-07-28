@@ -47,7 +47,6 @@ with the *PID* to terminate any processes that are using large amounts of resour
 > 3. create_directories.sh
 > 4. molecular_dynamics_2
 > 5. tar -xzf R-3.3.0.tar.gz
-> 
 > > ## Solution
 > >
 > > 1. Likely not OK - the name of the python program indicates it may run a resource intensive simulation.
