@@ -183,7 +183,7 @@ this works in the Scheduler episode later.
 
 Both the home and work file systems have special directories that allow you to share data 
 with other users. There are directories that allow you to share data only with other users
-in the same project and directories that allow you tot share data with users in other projects.
+in the same project and directories that allow you to share data with users in other projects.
 
 To share data with users in the same project you use the `/work/t01/t01/shared` directory
 (remember to replace `t01` with your project ID) and make sure the permissions on the 
