@@ -25,11 +25,10 @@ you may be interested in the following courses offered by the ARCHER2 service:
 
 The following debugging tools are available on ARCHER2:
 
-* **gdb4hpc** is a command-line debugging tool provided by Cray. It works similarly to
-  [gdb](https://www.gnu.org/software/gdb/), but allows the user to debug multiple parallel processes
-  without multiple windows. gdb4hpc can be used to investigate deadlocked code, segfaults, and other
-  errors for C/C++ and Fortran code. Users can single-step code and focus on specific processes groups
-  to help identify unexpected code behavior. (text from [ALCF](https://www.alcf.anl.gov/support-center/theta/gdb)).
+* **gdb4hpc** is a command-line tool working similarly to [gdb](https://www.gnu.org/software/gdb/) 
+  that allows users to debug parallel programs. It can launch parallel programs or attach to ones
+  already running and allows the user to step through the execution to identify the causes of any
+  unexpected behaviour. Available via ``module load gdb4hpc``.
 * **valgrind4hpc** is a parallel memory debugging tool that aids in detection of memory leaks and
   errors in parallel applications. It aggregates like errors across processes and threads to simply
   debugging of parallel appliciations.
@@ -37,11 +36,7 @@ The following debugging tools are available on ARCHER2:
 * **ATP** scalable core file and backtrace analysis when parallel programs crash.
 * **CCDB** Cray Comparative Debugger. Compare two versions of code side-by-side to analyse differences.
 
-See [the Cray Performance Measurement and Analysis Tools User Guide](https://pubs.cray.com/content/S-2376/7.0.0/cray-performance-measurement-and-analysis-tools-user-guide/about-the-cray-performance-measurement-and-analysis-tools-user-guide)
-
-**TODO** Add more details once we have seen the TDS. Links to further documentation.
-
-**TODO** Add exercise on using one or more of the tools (likely gdb4hpc and valgrind4hpc)
+See [the Cray Performance Measurement and Analysis Tools User Guide](https://pubs.cray.com/bundle/Cray_Performance_Measurement_and_Analysis_Tools_User_Guide_644_S-2376/page/About_the_Cray_Performance_Measurement_and_Analysis_Tools_User_Guide.html)
 
 ## Using gdb4hpc to debug an application
 
