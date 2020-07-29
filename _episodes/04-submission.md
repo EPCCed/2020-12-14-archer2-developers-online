@@ -26,7 +26,7 @@ available to users. The main commands you will use with Slurm on ARCHER2 are:
 * `salloc`: Submit interactive jobs to the scheduler
 * `srun`: Used within a batch job script or interactive job session to start a parallel program
 
-Full documentation on Slurm on ARCHER2 cn be found in [the *Running Jobs on ARCHER2* section of the User
+Full documentation on Slurm on ARCHER2 can be found in [the *Running Jobs on ARCHER2* section of the User
 and Best Practice Guide](https://docs.archer2.ac.uk/user-guide/scheduler.html).
 
 ## Finding out what resources are available: `sinfo`
@@ -370,7 +370,7 @@ Similar to the batch jobs covered above, users can also run interactive jobs usi
 command `salloc`. `salloc` takes the same arguments as `sbatch` but, obviously, these are 
 specified on the command line rather than in a job submission script.
 
-Once you the job requested with `salloc` starts, you will be returned to the command line 
+Once the job requested with `salloc` starts, you will be returned to the command line 
 and can now start parallel jobs on the compute nodes interactively with the `srun` command
 in the same way as you would within a job submission script.
 

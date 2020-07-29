@@ -103,8 +103,8 @@ The line number at which the initial breakpoint is made (in the above example, l
 Once the code is loaded, you can use various commands to move through your code. The following lists and describes some of the most useful ones:
 
 * ``help`` -- Lists all gdb4hpc commands. You can run ``help COMMAND_NAME`` to learn more about a specific command (*e.g.* ``help launch`` will tell you about the launch command
-* ``list`` -- Will show the current line of code and the 9 lines following. Repeeated use of ``list`` will move you down the code in ten-line chunks.
-* ``next`` -- Will jump to the next step in the program for each process and output which line of code each process is one. It will not enter subroutines. Note that there is no reverse-step in gdb4hpc.
+* ``list`` -- Will show the current line of code and the 9 lines following. Repeated use of ``list`` will move you down the code in ten-line chunks.
+* ``next`` -- Will jump to the next step in the program for each process and output which line of code each process is on. It will not enter subroutines. Note that there is no reverse-step in gdb4hpc.
 * ``step`` -- Like ``next``, but this will step into subroutines.
 * ``up`` -- Go up one level in the program (*e.g.* from a subroutine back to main).
 * ``print var`` -- Prints the value of variable ``var`` at this point in the code.
@@ -191,7 +191,7 @@ This time, instead of `next`, we will use `step` -- this does the same as `next`
 
 ## Profiling tools overview
 
-Profiling on ARCHER2 is provide through the Cray Performance Measurement and Analysis Tools (CrayPat). This has
+Profiling on ARCHER2 is provided through the Cray Performance Measurement and Analysis Tools (CrayPat). These have
 a number of different components:
 
 * **CrayPat** the full-featured program analysis tool set. CrayPat in turn consists of the following major components.

@@ -257,7 +257,7 @@ Currently Loaded Modulefiles:
 ```
 {: .output}
 
-You can see that, as well as the default modules, the `cray-netcdf` module is also loaded (`cray-netcdf/4.6.3.2` as we did not specify a version
+You can see that we now have the default `cray-netcdf` module (`cray-netcdf/4.6.3.2` as we did not specify a version
 explicitly).
 
 <!--

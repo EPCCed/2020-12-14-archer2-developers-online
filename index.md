@@ -26,7 +26,7 @@ This lesson provides an introduction to using ARCHER2 for users who:
 
 The lesson aims to answer the following questions:
   - What hardware is available on ARCHER2?
-    + What does they consist of (login nodes, compute nodes, file systems, backup)?
+    + What does it consist of (login nodes, compute nodes, file systems, backup)?
     + How does this impact me as a user?
   - How can I access ARCHER2 interactively and transfer data?
   - What does the ARCHER2 application development environment look like and how do I use it?
