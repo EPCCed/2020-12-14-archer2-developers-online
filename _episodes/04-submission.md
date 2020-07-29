@@ -213,7 +213,7 @@ Slurm reports back with the job ID for the job you have submitted
 > > the job. For example, if the job ID was "12345", then we could query the time limit with:
 > > 
 > > ```
-> > auser@login01-nmn:~> sacct -o "TimeLimit" -j 86
+> > auser@login01-nmn:~> sacct -o "TimeLimit" -j 12345
 > > ```
 > > {: .language-bash}
 > > ```

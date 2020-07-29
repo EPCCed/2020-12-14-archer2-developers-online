@@ -25,11 +25,10 @@ you may be interested in the following courses offered by the ARCHER2 service:
 
 The following debugging tools are available on ARCHER2:
 
-* **gdb4hpc** is a command-line debugging tool provided by Cray. It works similarly to
-  [gdb](https://www.gnu.org/software/gdb/), but allows the user to debug multiple parallel processes
-  without multiple windows. gdb4hpc can be used to investigate deadlocked code, segfaults, and other
-  errors for C/C++ and Fortran code. Users can single-step code and focus on specific processes groups
-  to help identify unexpected code behavior. (text from [ALCF](https://www.alcf.anl.gov/support-center/theta/gdb)).
+* **gdb4hpc** is a command-line tool working similarly to [gdb](https://www.gnu.org/software/gdb/) 
+  that allows users to debug parallel programs. It can launch parallel programs or attach to ones
+  already running and allows the user to step through the execution to identify the causes of any
+  unexpected behaviour. Available via ``module load gdb4hpc``.
 * **valgrind4hpc** is a parallel memory debugging tool that aids in detection of memory leaks and
   errors in parallel applications. It aggregates like errors across processes and threads to simply
   debugging of parallel appliciations.
@@ -37,11 +36,7 @@ The following debugging tools are available on ARCHER2:
 * **ATP** scalable core file and backtrace analysis when parallel programs crash.
 * **CCDB** Cray Comparative Debugger. Compare two versions of code side-by-side to analyse differences.
 
-See [the Cray Performance Measurement and Analysis Tools User Guide](https://pubs.cray.com/content/S-2376/7.0.0/cray-performance-measurement-and-analysis-tools-user-guide/about-the-cray-performance-measurement-and-analysis-tools-user-guide)
-
-**TODO** Add more details once we have seen the TDS. Links to further documentation.
-
-**TODO** Add exercise on using one or more of the tools (likely gdb4hpc and valgrind4hpc)
+See [the Cray Performance Measurement and Analysis Tools User Guide](https://pubs.cray.com/bundle/Cray_Performance_Measurement_and_Analysis_Tools_User_Guide_644_S-2376/page/About_the_Cray_Performance_Measurement_and_Analysis_Tools_User_Guide.html)
 
 ## Using gdb4hpc to debug an application
 
@@ -61,9 +56,10 @@ You can choose a different name for your executable, but I'll be using `my_exe` 
 
 We'll be using ``gdb4hpc`` to go through this program and see where errors might arise.
 
-Launch ``gdb4hpc``:
+Load and launch ``gdb4hpc``:
 
 ```bash
+ module load gdb4hpc
  gdb4hpc
 ```
     
@@ -85,7 +81,7 @@ We will use ``launch`` to start an application within gdb4hpc. For now, we want 
  dbg all> launch $my_prog{1} ./my_exe
 ```
     
-This will launch an ``srun`` job on one of the compute nodes. The number in the brackets ``{1}`` indicates the number of processes this job will be using (it's  1 here). You could use a larger number if you wanted. If you call for more processors than available on a single compute node, `gdb4hpc` will launch the program on an appropriate number of nodes. Note though that the more cores you ask for, the slower `gdb4hpc` will be.
+This will launch an ``srun`` job on one of the compute nodes. The name `my_prog` is a dummy name to which this run-through of the program is linked -- you will not be able to launch another program using this name, and you can use any name you want instead. The number in the brackets ``{1}`` indicates the number of processes this job will be using (it's  1 here). You could use a larger number if you wanted. If you call for more processes than available on a single compute node, `gdb4hpc` will launch the program on an appropriate number of nodes. Note though that the more cores you ask for, the slower `gdb4hpc` will be.
 
 Once the program is launched, gdb4hpc will load up the program and begin to run it. You will get output to screen something that looks like:
 
@@ -99,7 +95,7 @@ Number of dbgsrvs connected: [0];  Timeout Counter: [2]
 Number of dbgsrvs connected: [1];  Timeout Counter: [0]
 Finalizing setup...
 Launch complete.
-my_prog{0}: Initial breakpoint, main at /PATH/TO/gdb4hpc_exercise.c:7
+my_prog{0}: Initial breakpoint, main at /PATH/TO/gdb4hpc_exercise.c:9
 ```
     
 The line number at which the initial breakpoint is made (in the above example, line 7) corresponds to the first line within the `main` function.
@@ -124,16 +120,16 @@ For now, we will look at `list`, `next`, `print`, and `watch`. Running:
 should output the first 10 lines of `main`:
 
 ```
- my_prog{0}: 7	
- my_prog{0}: 8	  // Initiallise MPI environment
- my_prog{0}: 9	  MPI_Init(NULL,NULL);
- my_prog{0}: 10	
- my_prog{0}: 11	  // Get processor rank
- my_prog{0}: 12	  int rank;
- my_prog{0}: 13	  MPI_Comm_rank(MPI_COMM_WORLD,&rank);
- my_prog{0}: 14	
- my_prog{0}: 15	  int count = rank + 1;
+ my_prog{0}: 9	
+ my_prog{0}: 10	  // Initiallise MPI environment
+ my_prog{0}: 11	  MPI_Init(NULL,NULL);
+ my_prog{0}: 12	
+ my_prog{0}: 13	  // Get processor rank
+ my_prog{0}: 14	  int rank;
+ my_prog{0}: 15	  MPI_Comm_rank(MPI_COMM_WORLD,&rank);
  my_prog{0}: 16	
+ my_prog{0}: 17	  int count = rank + 1;
+ my_prog{0}: 18	
 ```
 
 Repeating `list` will bring show you the next 10 lines, *etc.*.
@@ -144,7 +140,7 @@ At the moment, we are at the start of the program. By running `next`, we will mo
  dbg all> next
 ```
 ```
- my_prog{0}: main at /PATH/TO/gdb4hpc_exercise.c:11
+ my_prog{0}: main at /PATH/TO/gdb4hpc_exercise.c:13
 ```
 
 Running `list` again will output the ten lines from 11-20. We can jump forward multiple lines by running `next N` -- by replacing *N* with a number, we will jump down *N* executable lines within our code. The `next` command will not allow us to move from one subroutine or function to another.
@@ -155,7 +151,7 @@ We can see on line 15 that there is a variable `count` about to be set. If we ty
  dbg all> print count
 ```
 
-The current value of variable `count` is printed to screen. If we progress the code to line 16 and print this variable value again, it has changed to 1. If we wanted, we could have used the `watch` command to get a notification whenever the value of the variable changes.
+The current value of variable `count` is printed to screen. If we progress the code past line 15 and print this variable value again, it has changed to 1. If we wanted, we could have used the `watch` command to get a notification whenever the value of the variable changes.
 
 > ## Exercise
 > What happens if you keep using `next` and `list`?
@@ -164,7 +160,7 @@ The current value of variable `count` is printed to screen. If we progress the c
 > {: .solution}
 {: .challenge}
 
-Let's now try launching across multiple processors:
+Let's now try launching across multiple processes:
 
 ```bash
  dbg all> launch $my_prog{2} ./my_exe
@@ -177,7 +173,7 @@ Let's now try launching across multiple processors:
 > {: .solution}
 {: .challenge}
 
-Let's `quit` our program, fix that bug, and go back into `gdb4hpc`. Again, we'll launch our program on 2 processors, and again, we'll watch the variable `count`. This time, both processes are able to get the same value for the variable `count`. There is one final part of the code to look at -- process 1 will try to get the sum of all even numbers between 0 and 20. However, the program begins to hang when process 1 reached line 28 (process 0 also hangs, but it's already at the `MPI_Finalise` part of the routine so we don't need to worry about it). Once we reach this hang, we can't easily keep going. Let's stop this debugging session and restart it by using `release`:
+Let's `quit` our program, fix that bug, and go back into `gdb4hpc`. Again, we'll launch our program on 2 processes, and again, we'll watch the variable `count`. This time, both processes are able to get the same value for the variable `count`. There is one final part of the code to look at -- process 1 will try to get the sum of all even numbers between 0 and 20. However, the program begins to hang when process 1 reached line 28 (process 0 also hangs, but it's already at the `MPI_Finalise` part of the routine so we don't need to worry about it). Once we reach this hang, we can't easily keep going. Let's stop this debugging session and restart it by using `release`:
 
 ```bash
  dbg all> release $my_prog
