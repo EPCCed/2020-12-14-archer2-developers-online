@@ -20,7 +20,7 @@ root: .
 
 <h2>Description</h2>
 
-This lesson provides an introduction to using ARCHER2 for user who:
+This lesson provides an introduction to using ARCHER2 for users who:
   - have already used other HPC systems; and
   - want to compile (and possibly) develop HPC software on ARCHER2.
 
