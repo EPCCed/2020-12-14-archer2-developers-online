@@ -407,7 +407,7 @@ Hello from rank 53, thread 0, on nid000001. (core affinity = 86,214)
 ```
 {: .output}
 
-Once you hav finished your interactive commands, you exit the interactive job with `exit`:
+Once you have finished your interactive commands, you exit the interactive job with `exit`:
 
 ```
 auser@login01-nmn:~> exit

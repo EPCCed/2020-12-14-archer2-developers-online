@@ -39,7 +39,6 @@ node and the amount of CPU and memory they are using. The `kill` command can be 
 with the *PID* to terminate any processes that are using large amounts of resource.
 
 > ## Login Node Etiquette
-> 
 > Which of these commands would probably be okay to run on the login node?
 > 
 > 1. python physics_sim.py
@@ -47,7 +46,7 @@ with the *PID* to terminate any processes that are using large amounts of resour
 > 3. create_directories.sh
 > 4. molecular_dynamics_2
 > 5. tar -xzf R-3.3.0.tar.gz
-> >
+> 
 > > ## Solution
 > > 1. Likely not OK - the name of the python program indicates it may run a resource intensive simulation.
 > > 2. OK - the login nodes can be used for building software unless the compiles take a very long time.
@@ -55,6 +54,7 @@ with the *PID* to terminate any processes that are using large amounts of resour
 > > 4. Likely not OK - the name of the program implies that it may run a resource intensive simulation.
 > > 5. OK - Expanding small data archives would usually be fine on the login nodes. Extracting very large
 > >    data archives may be better suited to running on a data analysis node.
+> {: .solution}
 {: .challenge}
 
 If you experience performance issues with a login node you should report it to the

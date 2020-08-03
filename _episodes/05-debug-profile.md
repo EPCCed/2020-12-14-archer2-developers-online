@@ -39,10 +39,6 @@ The following debugging tools are available on ARCHER2:
 
 See [the Cray Performance Measurement and Analysis Tools User Guide](https://pubs.cray.com/content/S-2376/7.0.0/cray-performance-measurement-and-analysis-tools-user-guide/about-the-cray-performance-measurement-and-analysis-tools-user-guide)
 
-**TODO** Add more details once we have seen the TDS. Links to further documentation.
-
-**TODO** Add exercise on using one or more of the tools (likely gdb4hpc and valgrind4hpc)
-
 ## Using gdb4hpc to debug an application
 
 For this exercise, we'll be debugging a short program using gdb4hpc. To start, we'll grab a copy of a buggy code from ARCHER2:

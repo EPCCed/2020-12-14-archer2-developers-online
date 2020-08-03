@@ -363,7 +363,7 @@ link stages.
 > Loading a module will automatically set the necessary paths and link flags for
 > that software, eliminating the need to specify them manually using the
 > `LDFLAGS` variable or another mechanism. For example, the `cray-libsci` module
-> is loaded by default on log in and sets the the wrappers to link in BLAS,
+> is loaded by default on login and sets the the wrappers to link in BLAS,
 > LAPACK, and ScaLAPACK functionality without the need for the user to provide
 > an explicit `-llib_sci`.
 {: .callout}

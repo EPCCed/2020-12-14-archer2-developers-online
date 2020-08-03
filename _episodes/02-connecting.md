@@ -65,13 +65,13 @@ and associate them with your account:
 
 ## Data transfer services: scp, rsync, Globus Online
 
-ARCHER2 supports a number of different data transfer mechanisms. The one you choose depends
+ARCHER2 supports several data transfer mechanisms. The one you choose depends
 on the amount and structure of the data you want to transfer and where you want to transfer
 the data to. The three main options are:
 
-* `scp`: The standard way to transfer small to medium amounts of data off ARCHER2 to any other location
-* `rsync`: Used if you need to keep small to medium datasets synchronised between two different locations
-* *Globus Online*: Used to transfer large amounts of data to other sites which are Globus Online enabled
+* `scp`: The standard way to transfer small to medium amounts of data (in the order of MBs or GBs) off ARCHER2 to any other location
+* `rsync`: Used if you need to keep small to medium datasets (in the order of MBs or GBs) synchronised between two different locations
+* *Globus Online*: Used to transfer large amounts of data (in the order of TBs) to other sites which are Globus Online enabled
 
 More information on data transfer mechanisms can be found in the ARCHER2 User and Best Practice Guide:
 
@@ -79,10 +79,7 @@ More information on data transfer mechanisms can be found in the ARCHER2 User an
 
 ## Data transfer best practice
 
-There is a lot of information available in the ARCHER2 documentation on how to transfer data using the
-methods above and how to make it efficient in the documentation linked above.
-
-Here are the main points you should consider:
+Information on how to transfer data efficiently using the above methods is available in the ARCHER2 documentation. Nevertheless, here are the main points you should consider:
 
 * **Not all data are created equal, understand your data.** Know what data you have. What is your
   critical data that needs to be copied to a secure location? Which data do you need in a different
