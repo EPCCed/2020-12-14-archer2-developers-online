@@ -48,6 +48,7 @@ with the *PID* to terminate any processes that are using large amounts of resour
 > 5. tar -xzf R-3.3.0.tar.gz
 > 
 > > ## Solution
+> >
 > > 1. Likely not OK - the name of the python program indicates it may run a resource intensive simulation.
 > > 2. OK - the login nodes can be used for building software unless the compiles take a very long time.
 > > 3. OK - A shell script used to manage data will usually be fine to run on the login nodes.
@@ -124,7 +125,7 @@ for this early enough (ideally, before you even start using the system for your 
 As already mentioned, the ARCHER2 User and Best Practice Guide provides a lot of useful information
 on managing and transferring your data. See:
 
-* https://docs.archer2.ac.uk/user-guide/data.html
+* [https://docs.archer2.ac.uk/user-guide/data.html](https://docs.archer2.ac.uk/user-guide/data.html)
 
 > ## Your data is your responsibility
 > Make sure you understand what the backup policy is on ARCHER2 and what implications this has for

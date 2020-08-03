@@ -25,11 +25,10 @@ you may be interested in the following courses offered by the ARCHER2 service:
 
 The following debugging tools are available on ARCHER2:
 
-* **gdb4hpc** is a command-line debugging tool provided by Cray. It works similarly to
-  [gdb](https://www.gnu.org/software/gdb/), but allows the user to debug multiple parallel processes
-  without multiple windows. gdb4hpc can be used to investigate deadlocked code, segfaults, and other
-  errors for C/C++ and Fortran code. Users can single-step code and focus on specific processes groups
-  to help identify unexpected code behavior. (text from [ALCF](https://www.alcf.anl.gov/support-center/theta/gdb)).
+* **gdb4hpc** is a command-line tool working similarly to [gdb](https://www.gnu.org/software/gdb/) 
+  that allows users to debug parallel programs. It can launch parallel programs or attach to ones
+  already running and allows the user to step through the execution to identify the causes of any
+  unexpected behaviour. Available via ``module load gdb4hpc``.
 * **valgrind4hpc** is a parallel memory debugging tool that aids in detection of memory leaks and
   errors in parallel applications. It aggregates like errors across processes and threads to simply
   debugging of parallel appliciations.
@@ -37,7 +36,7 @@ The following debugging tools are available on ARCHER2:
 * **ATP** scalable core file and backtrace analysis when parallel programs crash.
 * **CCDB** Cray Comparative Debugger. Compare two versions of code side-by-side to analyse differences.
 
-See [the Cray Performance Measurement and Analysis Tools User Guide](https://pubs.cray.com/content/S-2376/7.0.0/cray-performance-measurement-and-analysis-tools-user-guide/about-the-cray-performance-measurement-and-analysis-tools-user-guide)
+See [the Cray Performance Measurement and Analysis Tools User Guide](https://pubs.cray.com/bundle/Cray_Performance_Measurement_and_Analysis_Tools_User_Guide_644_S-2376/page/About_the_Cray_Performance_Measurement_and_Analysis_Tools_User_Guide.html)
 
 ## Using gdb4hpc to debug an application
 
@@ -57,9 +56,10 @@ You can choose a different name for your executable, but I'll be using `my_exe` 
 
 We'll be using ``gdb4hpc`` to go through this program and see where errors might arise.
 
-Launch ``gdb4hpc``:
+Load and launch ``gdb4hpc``:
 
 ```bash
+ module load gdb4hpc
  gdb4hpc
 ```
     
@@ -81,7 +81,7 @@ We will use ``launch`` to start an application within gdb4hpc. For now, we want 
  dbg all> launch $my_prog{1} ./my_exe
 ```
     
-This will launch an ``srun`` job on one of the compute nodes. The number in the brackets ``{1}`` indicates the number of processes this job will be using (it's  1 here). You could use a larger number if you wanted. If you call for more processors than available on a single compute node, `gdb4hpc` will launch the program on an appropriate number of nodes. Note though that the more cores you ask for, the slower `gdb4hpc` will be.
+This will launch an ``srun`` job on one of the compute nodes. The name `my_prog` is a dummy name to which this run-through of the program is linked -- you will not be able to launch another program using this name, and you can use any name you want instead. The number in the brackets ``{1}`` indicates the number of processes this job will be using (it's  1 here). You could use a larger number if you wanted. If you call for more processes than available on a single compute node, `gdb4hpc` will launch the program on an appropriate number of nodes. Note though that the more cores you ask for, the slower `gdb4hpc` will be.
 
 Once the program is launched, gdb4hpc will load up the program and begin to run it. You will get output to screen something that looks like:
 
@@ -95,7 +95,7 @@ Number of dbgsrvs connected: [0];  Timeout Counter: [2]
 Number of dbgsrvs connected: [1];  Timeout Counter: [0]
 Finalizing setup...
 Launch complete.
-my_prog{0}: Initial breakpoint, main at /PATH/TO/gdb4hpc_exercise.c:7
+my_prog{0}: Initial breakpoint, main at /PATH/TO/gdb4hpc_exercise.c:9
 ```
     
 The line number at which the initial breakpoint is made (in the above example, line 7) corresponds to the first line within the `main` function.
@@ -103,8 +103,8 @@ The line number at which the initial breakpoint is made (in the above example, l
 Once the code is loaded, you can use various commands to move through your code. The following lists and describes some of the most useful ones:
 
 * ``help`` -- Lists all gdb4hpc commands. You can run ``help COMMAND_NAME`` to learn more about a specific command (*e.g.* ``help launch`` will tell you about the launch command
-* ``list`` -- Will show the current line of code and the 9 lines following. Repeeated use of ``list`` will move you down the code in ten-line chunks.
-* ``next`` -- Will jump to the next step in the program for each process and output which line of code each process is one. It will not enter subroutines. Note that there is no reverse-step in gdb4hpc.
+* ``list`` -- Will show the current line of code and the 9 lines following. Repeated use of ``list`` will move you down the code in ten-line chunks.
+* ``next`` -- Will jump to the next step in the program for each process and output which line of code each process is on. It will not enter subroutines. Note that there is no reverse-step in gdb4hpc.
 * ``step`` -- Like ``next``, but this will step into subroutines.
 * ``up`` -- Go up one level in the program (*e.g.* from a subroutine back to main).
 * ``print var`` -- Prints the value of variable ``var`` at this point in the code.
@@ -120,16 +120,16 @@ For now, we will look at `list`, `next`, `print`, and `watch`. Running:
 should output the first 10 lines of `main`:
 
 ```
- my_prog{0}: 7	
- my_prog{0}: 8	  // Initiallise MPI environment
- my_prog{0}: 9	  MPI_Init(NULL,NULL);
- my_prog{0}: 10	
- my_prog{0}: 11	  // Get processor rank
- my_prog{0}: 12	  int rank;
- my_prog{0}: 13	  MPI_Comm_rank(MPI_COMM_WORLD,&rank);
- my_prog{0}: 14	
- my_prog{0}: 15	  int count = rank + 1;
+ my_prog{0}: 9	
+ my_prog{0}: 10	  // Initiallise MPI environment
+ my_prog{0}: 11	  MPI_Init(NULL,NULL);
+ my_prog{0}: 12	
+ my_prog{0}: 13	  // Get processor rank
+ my_prog{0}: 14	  int rank;
+ my_prog{0}: 15	  MPI_Comm_rank(MPI_COMM_WORLD,&rank);
  my_prog{0}: 16	
+ my_prog{0}: 17	  int count = rank + 1;
+ my_prog{0}: 18	
 ```
 
 Repeating `list` will bring show you the next 10 lines, *etc.*.
@@ -140,7 +140,7 @@ At the moment, we are at the start of the program. By running `next`, we will mo
  dbg all> next
 ```
 ```
- my_prog{0}: main at /PATH/TO/gdb4hpc_exercise.c:11
+ my_prog{0}: main at /PATH/TO/gdb4hpc_exercise.c:13
 ```
 
 Running `list` again will output the ten lines from 11-20. We can jump forward multiple lines by running `next N` -- by replacing *N* with a number, we will jump down *N* executable lines within our code. The `next` command will not allow us to move from one subroutine or function to another.
@@ -151,7 +151,7 @@ We can see on line 15 that there is a variable `count` about to be set. If we ty
  dbg all> print count
 ```
 
-The current value of variable `count` is printed to screen. If we progress the code to line 16 and print this variable value again, it has changed to 1. If we wanted, we could have used the `watch` command to get a notification whenever the value of the variable changes.
+The current value of variable `count` is printed to screen. If we progress the code past line 15 and print this variable value again, it has changed to 1. If we wanted, we could have used the `watch` command to get a notification whenever the value of the variable changes.
 
 > ## Exercise
 > What happens if you keep using `next` and `list`?
@@ -160,7 +160,7 @@ The current value of variable `count` is printed to screen. If we progress the c
 > {: .solution}
 {: .challenge}
 
-Let's now try launching across multiple processors:
+Let's now try launching across multiple processes:
 
 ```bash
  dbg all> launch $my_prog{2} ./my_exe
@@ -173,7 +173,7 @@ Let's now try launching across multiple processors:
 > {: .solution}
 {: .challenge}
 
-Let's `quit` our program, fix that bug, and go back into `gdb4hpc`. Again, we'll launch our program on 2 processors, and again, we'll watch the variable `count`. This time, both processes are able to get the same value for the variable `count`. There is one final part of the code to look at -- process 1 will try to get the sum of all even numbers between 0 and 20. However, the program begins to hang when process 1 reached line 28 (process 0 also hangs, but it's already at the `MPI_Finalise` part of the routine so we don't need to worry about it). Once we reach this hang, we can't easily keep going. Let's stop this debugging session and restart it by using `release`:
+Let's `quit` our program, fix that bug, and go back into `gdb4hpc`. Again, we'll launch our program on 2 processes, and again, we'll watch the variable `count`. This time, both processes are able to get the same value for the variable `count`. There is one final part of the code to look at -- process 1 will try to get the sum of all even numbers between 0 and 20. However, the program begins to hang when process 1 reached line 28 (process 0 also hangs, but it's already at the `MPI_Finalise` part of the routine so we don't need to worry about it). Once we reach this hang, we can't easily keep going. Let's stop this debugging session and restart it by using `release`:
 
 ```bash
  dbg all> release $my_prog
@@ -191,7 +191,7 @@ This time, instead of `next`, we will use `step` -- this does the same as `next`
 
 ## Profiling tools overview
 
-Profiling on ARCHER2 is provide through the Cray Performance Measurement and Analysis Tools (CrayPat). This has
+Profiling on ARCHER2 is provided through the Cray Performance Measurement and Analysis Tools (CrayPat). These have
 a number of different components:
 
 * **CrayPat** the full-featured program analysis tool set. CrayPat in turn consists of the following major components.
@@ -241,24 +241,7 @@ INFO: creating the PerfTools-instrumented executable 'nbody-parallel.exe' (lite-
 ```
 {: .output}
 
-As the output of the compilation says, the executable `nbody-parallel.exe` has been instrumented by CrayPat-lite and therefore we can now run the application using the following script
-
-```
-#!/bin/bash
-#SBATCH --job-name=my_mpi_job
-#SBATCH --account=t01
-#SBATCH --time=0:05:0
-#SBATCH --exclusive
-#SBATCH --nodes=1
-#SBATCH --tasks-per-node=64
-#SBATCH --cpus-per-task=1
-#SBATCH --output=slurm-out.txt
-
-export OMP_NUM_THREADS=1
-
-srun --cpu-bind=cores ./nbody-parallel.exe -n 10240 -i 10 -t 1
-```
- {: .language-bash}
+As the output of the compilation says, the executable `nbody-parallel.exe` has been instrumented by CrayPat-lite and therefore we can now run the application using the Slurm script provided with the source code.
 
 Once our job has finished, we can get the performance data summarized at the end of the job STDOUT.
 ```
@@ -328,24 +311,20 @@ auser@login01-nmn:~> pat_build nbody-parallel.exe
 {: .bash}
 
 and a new binary called `nbody-parallel.exe+pat` it will be generated. In fact, this is the binary that we need
-to run in order to obtain the performance data
-
+to run in order to obtain the performance data. Replace the ``srun`` line in the Slurm script with the following
 ```
-#!/bin/bash
-#SBATCH --job-name=my_mpi_job
-#SBATCH --account=t01
-#SBATCH --time=0:05:0
-#SBATCH --exclusive
-#SBATCH --nodes=1
-#SBATCH --tasks-per-node=64
-#SBATCH --cpus-per-task=1
-export OMP_NUM_THREADS=1
-
 srun --cpu-bind=cores ./nbody-parallel.exe+pat -n 10240 -i 10 -t 1
 ```
  {: .language-bash}
 
-After the job has finished, a new directory called `nbody-parallel.exe+pat+...` will be created. It is now time to obtain the performance report. We do this with the `pat_report` command and the new created directory
+After the job has finished, files are stored in an experiment data directory with the following format: `exe+pat+PID-node[s|t]` where:
+
+* `exe`: The name of the instrumented executable
+* `PID`: The process ID assigned to the instrumented executable at runtime
+* `node`: The physical node ID upon which the rank zero process was executed
+* `[s|t]`: The type of experiment performed, either `s` for sampling or `t` for tracing
+	
+for example, in our case a new directory called `nbody-parallel.exe+pat+189193-3s` could be created. It is now time to obtain the performance report. We do this with the `pat_report` command and the new created directory
 ```
 auser@login01-nmn:~> pat_report nbody-parallel.exe+pat+189193-3s
 ```
@@ -498,7 +477,7 @@ pat_build -O nbody-parallel.exe+pat+189193-3s/build-options.apa
 {: .bash}
 
 This will produce a third binary with extension `+apa`. This binary should once again be run on the back end, so the submission script should be modified and the name of the executable changed to `nbody-parallel.exe+apa`.
-A new directory `nbody-parallel.exe+apa+...`  will be generated by the application, which should be processed by the `pat_report` tool. As this is now a tracing experiment it will provide more information than before
+Similarly to the sampling process, a new directory called `exe+apa+PID-node[s|t]` will be generated by the application, which should be processed by the `pat_report` tool. The output format of this new directory is similar to the one obtained with sampling, but now this includes `apa` and `t` to indicate that this is a tracing experiment. For instance, with our code we could get a new directory called `nbody-parallel.exe+apa+69935-4t`.
 ```
 auser@login01-nmn:~> pat_report nbody-parallel.exe+apa+69935-4t
 ```
