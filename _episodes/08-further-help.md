@@ -1,6 +1,6 @@
 ---
 title: "Next steps"
-teaching: 20
+teaching: 30
 exercises: 0
 questions:
 - "Where can I get further help on using ARCHER2?"

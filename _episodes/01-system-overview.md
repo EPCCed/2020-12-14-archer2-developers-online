@@ -1,7 +1,7 @@
 ---
 title: "Overview of the ARCHER2 system"
-teaching: 20
-exercises: 0
+teaching: 30
+exercises: 15
 questions:
 - "What hardware and software is available on ARCHER2?"
 - "How does the hardware fit together?"
