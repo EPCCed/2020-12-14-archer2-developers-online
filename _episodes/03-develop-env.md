@@ -1,7 +1,7 @@
 ---
 title: "ARCHER2 development environment "
 teaching: 30
-exercises: 45
+exercises: 40
 questions:
 - "What does the ARCHER2 development environment look like and how do I access different components?"
 - "How can I find out what compilers, tools, and libraries are available?"

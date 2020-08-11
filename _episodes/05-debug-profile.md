@@ -1,7 +1,7 @@
 ---
 title: "Debugging and profiling on ARCHER2"
-teaching: 60
-exercises: 30
+teaching: 30
+exercises: 20
 questions:
 - "What debugging tools are available on ARCHER2 and how can I access them?"
 - "What profiling tools are available on ARCHER2 and how can I access them?"

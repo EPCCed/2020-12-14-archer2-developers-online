@@ -1,6 +1,6 @@
 ---
 title: "How to be a good ARCHER2 citizen"
-teaching: 30
+teaching: 20
 exercises: 10
 questions:
 - "How can I be a responsible user?"

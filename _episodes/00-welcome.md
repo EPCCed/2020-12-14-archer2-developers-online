@@ -2,6 +2,7 @@
 title: "Welcome"
 teaching: 15
 exercises: 0
+start: True
 questions:
 - "What can I expect from this course?"
 - "How will the course work and how will I get help?"
