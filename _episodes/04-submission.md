@@ -141,7 +141,6 @@ module load xthi
 
 export OMP_NUM_THREADS=1
 
-# Load modules, etc.
 # srun to launch the executable
 srun --cpu-bind=cores xthi
 ```

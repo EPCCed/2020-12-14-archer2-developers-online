@@ -21,34 +21,56 @@ keypoints:
 
 ## Using software modules on ARCHER2
 
-ARCHER2 software modules use the [Lmod](https://lmod.readthedocs.io/en/latest/) system to provide
+ARCHER2 software modules use the
+[environment modules](https://modules.readthedocs.io/en/latest/index.html) system to provide
 access to different software and versions on the system. The modules and versions available will
 change across the lifetime of the service.
 
-Software modules are provided by both Cray and the ARCHER2 CSE team at [EPCC](https://www.epcc.ed.ac.uk).
+Software modules are provided by both HPE Cray and the ARCHER2 CSE team at
+[EPCC](https://www.epcc.ed.ac.uk).
 
 ## What modules are loaded when you log into ARCHER2?
 
 All users start with a default set of modules loaded into their environment. These include:
 
-   - Cray Compiler Environment (CCE).
-   - Cray MPICH2 MPI library.
-   - Cray LibSci scientific and numerical libraries.
-   - Cray lightweight performance analysis toolkit.
-   - System modules to enable use of the ARCHER2 hardware.
+   - Cray Compiler Environment (CCE)
+   - Cray MPICH MPI library
+   - Cray LibSci scientific and numerical libraries
+   - Cray lightweight performance analysis toolkit
+   - System modules to enable use of the ARCHER2 hardware
 
-> ## Do not purge!
-> 
-> Unlike many other HPC systems you may have used, you should not use the `module purge` 
-> command before starting to use the system. Some of the modules loaded by default are
-> required for you to be able to use the system correctly and so many things will not
-> work if you use `module purge`. If you need to change the setup, you will generally 
-> use `module load` instead.
-{: .callout}
+You can see what modules you currently have loaded with the `module list` command:
+
+```
+auser@login01-nmn:~> module list
+```
+{: .language-bash}
+```
+Currently Loaded Modulefiles:
+ 1) cpe-cray                          7) cray-dsmml/0.1.2(default)                           
+ 2) cce/10.0.3(default)               8) perftools-base/20.09.0(default)                     
+ 3) craype/2.7.0(default)             9) xpmem/2.2.35-7.0.1.0_1.3__gd50fabf.shasta(default)  
+ 4) craype-x86-rome                  10) cray-mpich/8.0.15(default)                          
+ 5) libfabric/1.11.0.0.233(default)  11) cray-libsci/20.08.1.2(default)                      
+ 6) craype-network-ofi 
+```
+{: .output}
 
 This means that your environment is already configured to build software using the Cray Compiling
-Environment (CCE), the current default version of Cray MPICH, and with numerical libraries provided
-by the current default version of Cray LibSci.
+Environment (CCE), the current default version of HPE Cray MPICH, and with numerical libraries provided
+by the current default version of HPE Cray LibSci.
+
+> ## Getting back if you purge or make a mistake
+> 
+> Unlike many other HPC systems you may have used, you should not generally use the
+> `module purge` command before starting to use the system. Some of the modules
+> loaded by default are required for you to be able to use the system correctly and
+> so many things will not work if you use `module purge`. If you need to change the
+> setup, you will generally use the `module load` or `module swap` commands instead.
+>
+> If you do find yourself with a broken environment you can usually fix things by
+> logging out and logging back in again.
+{: .callout}
 
 ## Finding out what software is available
 
@@ -59,31 +81,37 @@ auser@login01-nmn:~> module avail
 ```
 {: .language-bash}
 ```
-------------------------------------------- /opt/cray/pe/perftools/20.05.0/modulefiles -------------------------------------------
+----------------------- /opt/cray/pe/perftools/20.05.0/modulefiles ------------------------
 perftools       perftools-lite-events  perftools-lite-hbm    perftools-nwpc     
 perftools-lite  perftools-lite-gpu     perftools-lite-loops  perftools-preload  
 
---------------------------------------------- /opt/cray/pe/craype/2.6.4/modulefiles ----------------------------------------------
-craype-hugepages1G  craype-hugepages4M   craype-hugepages32M   craype-hugepages256M  craype-network-slingshot10  
-craype-hugepages2G  craype-hugepages8M   craype-hugepages64M   craype-hugepages512M  craype-x86-rome             
-craype-hugepages2M  craype-hugepages16M  craype-hugepages128M  craype-network-none   
+-------------------------- /opt/cray/pe/craype/2.6.4/modulefiles --------------------------
+craype-hugepages1G  craype-hugepages8M   craype-hugepages128M  craype-network-slingshot10  
+craype-hugepages2G  craype-hugepages16M  craype-hugepages256M  craype-x86-rome             
+craype-hugepages2M  craype-hugepages32M  craype-hugepages512M  
+craype-hugepages4M  craype-hugepages64M  craype-network-none   
 
-------------------------------------------------- /usr/local/Modules/modulefiles -------------------------------------------------
+----------------------------- /usr/local/Modules/modulefiles ------------------------------
 dot  module-git  module-info  modules  null  use.own  
 
----------------------------------------------------- /opt/cray/pe/modulefiles ----------------------------------------------------
-atp/3.5.4(default)                    cray-libsci/20.03.1.4(default)             craype-dl-plugin-py3/20.05.1     
-cce/10.0.0(default)                   cray-mpich-abi/8.0.10                      craype/2.6.4(default)            
-cray-ccdb/4.5.4(default)              cray-mpich/8.0.10(default)                 craypkg-gen/1.3.9(default)       
-cray-cti/2.5.6(default)               cray-netcdf-hdf5parallel/4.6.3.2(default)  gdb4hpc/4.5.6(default)           
-cray-dsmml/0.1.0(default)             cray-netcdf/4.6.3.2(default)               iobuf/2.0.9(default)             
-cray-fftw/3.3.8.4(default)            cray-openshmemx/10.1.0(default)            papi/5.7.0.3(default)            
-cray-fftw/3.3.8.5                     cray-parallel-netcdf/1.11.1.1(default)     perftools-base/20.05.0(default)  
-cray-ga/5.7.0.3                       cray-pmi-lib/6.0.5(default)                PrgEnv-cray/7.0.0(default)       
-cray-hdf5-parallel/1.10.5.2(default)  cray-pmi/6.0.5(default)                    PrgEnv-gnu/7.0.0(default)        
-cray-hdf5/1.10.5.2(default)           cray-stat/4.4.5(default)                   valgrind4hpc/2.5.5(default)      
+-------------------------------- /opt/cray/pe/modulefiles ---------------------------------
+atp/3.5.4(default)                         cray-openshmemx/10.1.0(default)         
+cce/10.0.0(default)                        cray-parallel-netcdf/1.11.1.1(default)  
+cray-ccdb/4.5.4(default)                   cray-pmi-lib/6.0.5(default)             
+cray-cti/2.5.6(default)                    cray-pmi/6.0.5(default)                 
+cray-dsmml/0.1.0(default)                  cray-stat/4.4.5(default)                
+cray-fftw/3.3.8.4(default)                 craype-dl-plugin-py3/20.05.1            
+cray-fftw/3.3.8.5                          craype/2.6.4(default)                   
+cray-ga/5.7.0.3                            craypkg-gen/1.3.9(default)              
+cray-hdf5-parallel/1.10.5.2(default)       gdb4hpc/4.5.6(default)                  
+cray-hdf5/1.10.5.2(default)                iobuf/2.0.9(default)                    
+cray-libsci/20.03.1.4(default)             papi/5.7.0.3(default)                   
+cray-mpich-abi/8.0.10                      perftools-base/20.05.0(default)         
+cray-mpich/8.0.10(default)                 PrgEnv-cray/7.0.0(default)              
+cray-netcdf-hdf5parallel/4.6.3.2(default)  PrgEnv-gnu/7.0.0(default)               
+cray-netcdf/4.6.3.2(default)               valgrind4hpc/2.5.5(default)             
 
------------------------------------------------------ /opt/cray/modulefiles ------------------------------------------------------
+---------------------------------- /opt/cray/modulefiles ----------------------------------
 capsules/0.8.3(default)                                                                 
 chapel/1.20.1(default)                                                                  
 cray-lustre-client/2.12.0.5_cray_166_gf6711cf-7.0.1.0_2.24__gf6711cfb3.shasta(default)  
@@ -93,15 +121,15 @@ libfabric/1.10.0.0.249(default)
 spark/3.0.0(default)                                                                    
 xpmem/2.2.35-7.0.1.0_3.9__gfa8d091.shasta(default)                                      
 
--------------------------------------------------------- /opt/modulefiles --------------------------------------------------------
-cray-python/3.8.2.0(default)  cray-R/3.6.3(default)  gcc/8.1.0  gcc/9.3.0(default)  
+------------------------------------ /opt/modulefiles -------------------------------------
+cray-python/3.8.2.0(default)  cray-R/3.6.3(default)  gcc/8.1.0  gcc/9.3.0(default)
 
 ```
 {: .output}
 
-The output lists the available modules and their versions. It also shows you
-which modules are loaded by default when there are multiple versions available
-and you do not specify the version when you load.
+The output lists the available modules and their versions. It also shows you which modules are
+loaded by default (marked with `(default)`) when there are multiple versions available and you do
+not specify the version when you load.
 
 > ## Licensed software
 > Some of the software installed on ARCHER2 requires the user to have their licence validated before they
@@ -113,12 +141,12 @@ If you want more information on a particular module, you can use the `module hel
 to get more info on the `cray-netcdf` module:
 
 ```
-auser@login01-nmn:~> module help cray-netcdf
+aturner@login01-nmn:~> module help cray-netcdf
 ```
 {: .language-bash}
 ```
 -------------------------------------------------------------------
-Module Specific Help for /opt/cray/pe/modulefiles/cray-netcdf/4.6.3.2:
+Module Specific Help for /opt/cray/pe/modulefiles/cray-netcdf/4.7.4.0:
 
 
 cray-netcdf
@@ -126,30 +154,29 @@ cray-netcdf
 
 Release Date:
 -------------
-  November 2019
+  August 2020
 
 Purpose:
 --------
-  * Support for AMD's AOCC compiler.
-  * Fixes a broken symlink for the 'bin' directory.
+  * Update to upstream release 4.7.4.
 
 Product and OS Dependencies:
 ----------------------------
-  The NetCDF release is supported on the following Cray systems:
-    * Cray XC systems with CLE 6.0 or later
+  The NetCDF release is supported on the following systems:
+    * Cray XC systems with CLE 7.0 UP02 or later
 
-  The NetCDF 4.6.3.2 release requires the following software products:
+  The NetCDF 4.7.4.0 release requires the following software products:
 
-    Cray HDF5 1.10.5.*
+    Cray HDF5 1.12.0.*
     CrayPE 2.1.2 or later
 
     One or more compilers:
-        CCE 8.7 or later
-        GCC 7.3 or later
+        CCE 9.0 or later
+        GCC 8.0 or later
         Intel 19.0 or later
-        PGI 19.0 or later
-        Allinea 18.2.0 or later
-        AOCC 2.0 or later
+        PGI 20.1 or later
+        Allinea 20.0 or later
+        AOCC 2.1 or later
 
 Notes and Limitations:
 ---------------------
@@ -211,6 +238,7 @@ The Lmod tool will load these dependencies for you when you load the module (see
 {: .output} -->
 
 
+
 ## Loading and switching modules
 
 Lets look at our environment before we change anything. To see just our loaded modules we use the
@@ -222,10 +250,12 @@ auser@login01-nmn:~> module list
 {: .language-bash}
 ```
 Currently Loaded Modulefiles:
- 1) cce/10.0.0(default)              5) craype/2.6.4(default)             9) cray-dsmml/0.1.0(default)                           
- 2) cray-libsci/20.03.1.4(default)   6) craype-x86-rome                  10) perftools-base/20.05.0(default)                     
- 3) cray-mpich/8.0.10(default)       7) libfabric/1.10.0.0.249(default)  11) xpmem/2.2.35-7.0.1.0_3.9__gfa8d091.shasta(default)  
- 4) PrgEnv-cray/7.0.0(default)       8) craype-network-slingshot10 
+ 1) cpe-cray                          7) cray-dsmml/0.1.2(default)                           
+ 2) cce/10.0.3(default)               8) perftools-base/20.09.0(default)                     
+ 3) craype/2.7.0(default)             9) xpmem/2.2.35-7.0.1.0_1.3__gd50fabf.shasta(default)  
+ 4) craype-x86-rome                  10) cray-mpich/8.0.15(default)                          
+ 5) libfabric/1.11.0.0.233(default)  11) cray-libsci/20.08.1.2(default)                      
+ 6) craype-network-ofi 
 ```
 {: .output}
 
@@ -250,108 +280,150 @@ auser@login01-nmn:~> module list
 {: .language-bash}
 ```
 Currently Loaded Modulefiles:
- 1) cce/10.0.0(default)              5) craype/2.6.4(default)             9) cray-dsmml/0.1.0(default)                           
- 2) cray-libsci/20.03.1.4(default)   6) craype-x86-rome                  10) perftools-base/20.05.0(default)                     
- 3) cray-mpich/8.0.10(default)       7) libfabric/1.10.0.0.249(default)  11) xpmem/2.2.35-7.0.1.0_3.9__gfa8d091.shasta(default)  
- 4) PrgEnv-cray/7.0.0(default)       8) craype-network-slingshot10       12) cray-netcdf/4.6.3.2(default) 
+ 1) cpe-cray                          7) cray-dsmml/0.1.2(default)                           
+ 2) cce/10.0.3(default)               8) perftools-base/20.09.0(default)                     
+ 3) craype/2.7.0(default)             9) xpmem/2.2.35-7.0.1.0_1.3__gd50fabf.shasta(default)  
+ 4) craype-x86-rome                  10) cray-mpich/8.0.15(default)                          
+ 5) libfabric/1.11.0.0.233(default)  11) cray-libsci/20.08.1.2(default)                      
+ 6) craype-network-ofi               12) cray-netcdf/4.7.4.0 
 ```
 {: .output}
 
-You can see that we now have the default `cray-netcdf` module (`cray-netcdf/4.6.3.2` as we did not specify a version
+You can see that we now have the default `cray-netcdf` module (`cray-netcdf/4.7.4.0` as we did not specify a version
 explicitly).
 
 <!--
   Note: Once Lmod is working, we likely want to choose a module that has dependencies so we 
   can note that Lmod has automatically loaded dependencies. -->
 
-If you want to swap two versions of the same module then you simply load the version that you 
-want to swap for the currently loaded version, Lmod recognises that they are the same module 
-with different versions and swaps them for you.
+If you want to swap two versions of the same module then you use the `module swap` command.
+
+<!-- Need to add example once there is a module we can actually swap! -->
 
 ## Switching between compiler environments
 
-You use the `module swap` command to switch between the two different compiler environments available
+You use the `module restore` command to switch between different compiler environments available
 on ARCHER2. The available environments are:
 
 * Cray Compiling Environment (CCE): `PrgEnv-cray`
 * GNU Compiler Collection (GCC): `PrgEnv-gnu`
-<!-- * AMD Optimizing Compilers (AOCC): `PrgEnv-aocc` (**TODO** Check this name) -->
+* AMD Optimizing Compilers (AOCC): `PrgEnv-aocc`
 
-As `PrgEnv-cray` is loaded by default when you log in, you can swap to the GCC compiler environment
-with:
+These programming environments are all defined by *module collections*. `PrgEnv-cray` is loaded by
+default when you log in. You can change to the GCC compiler environment with the
+`module restore PrgEnv-gnu` command (with `module list` afterwards to show how things have changed):
 
 ```
-auser@login01-nmn:~> module swap PrgEnv-cray PrgEnv-gnu
-```
-{: .language-bash}
-```
-Switching from PrgEnv-cray to PrgEnv-gnu/7.0.0
-  Loading requirement: gcc/9.3.0 cray-libsci/20.03.1.4 cray-mpich/8.0.10
-```
-```
+auser@login01-nmn:~> module restore PrgEnv-gnu
 auser@login01-nmn:~> module list
 ```
 {: .language-bash}
 ```
+Unloading cray-libsci/20.08.1.2
+Unloading cray-mpich/8.0.15
+Unloading xpmem/2.2.35-7.0.1.0_1.3__gd50fabf.shasta
+
+Unloading perftools-base/20.09.0
+  WARNING: Did not unuse /opt/cray/pe/perftools/20.09.0/modulefiles
+
+Unloading cray-dsmml/0.1.2
+Unloading craype-network-ofi
+Unloading libfabric/1.11.0.0.233
+Unloading craype-x86-rome
+
+Unloading craype/2.7.0
+  WARNING: Did not unuse /opt/cray/pe/craype/2.7.0/modulefiles
+
+Unloading cce/10.0.3
+Unloading cpe-cray
+Loading cpe-gnu
+Loading gcc/10.1.0
+Loading craype/2.7.0
+Loading craype-x86-rome
+Loading libfabric/1.11.0.0.233
+Loading craype-network-ofi
+Loading cray-dsmml/0.1.2
+Loading perftools-base/20.09.0
+Loading xpmem/2.2.35-7.0.1.0_1.3__gd50fabf.shasta
+Loading cray-mpich/8.0.15
+Loading cray-libsci/20.08.1.2
+
 Currently Loaded Modulefiles:
- 1) craype/2.6.4(default)             5) cray-dsmml/0.1.0(default)                            9) cray-libsci/20.03.1.4(default)  
- 2) craype-x86-rome                   6) perftools-base/20.05.0(default)                     10) cray-mpich/8.0.10(default)      
- 3) libfabric/1.10.0.0.249(default)   7) xpmem/2.2.35-7.0.1.0_3.9__gfa8d091.shasta(default)  11) PrgEnv-gnu/7.0.0(default)       
- 4) craype-network-slingshot10        8) gcc/9.3.0(default)
+ 1) cpe-gnu                           7) perftools-base/20.09.0(default)                     
+ 2) craype/2.7.0(default)             8) xpmem/2.2.35-7.0.1.0_1.3__gd50fabf.shasta(default)  
+ 3) craype-x86-rome                   9) cray-mpich/8.0.15(default)                          
+ 4) libfabric/1.11.0.0.233(default)  10) cray-libsci/20.08.1.2(default)                      
+ 5) craype-network-ofi               11) gcc/10.1.0                                           
+ 6) cray-dsmml/0.1.2(default)   
 ```
 
 ## Switching between different compiler versions
 
-As for the programming environments, you use the `module swap` command to switch between different
+Unlike the programming environments, you use the `module swap` command to switch between different
 versions of the compilers within the programming environments. To do this, you need to know the
 names of the compiler modules, they are:
 
 * `cce` for the Cray Compiling Environment
 * `gcc` for the GNU Compiler Collection
-<!-- * `aocc` for the AMD Optimising Compilers -->
+* `aocc` for the AMD Optimising Compilers
 
 For example, to change the version of GCC you are using you would first switch to the Gnu programming
 environment and then switch to a different version of GCC:
 
 ```
-auser@login01-nmn:~> module swap PrgEnv-cray PrgEnv-gnu
-```
-{: .language-bash}
-```
-Switching from PrgEnv-cray to PrgEnv-gnu/7.0.0
-  Loading requirement: gcc/9.3.0 cray-libsci/20.03.1.4 cray-mpich/8.0.10
-```
-```
-auser@login01-nmn:~> module swap gcc gcc/8.1.0
-```
-{: .language-bash}
-```
-Switching from gcc/9.3.0 to gcc/8.1.0
-  Unloading dependent: PrgEnv-gnu/7.0.0
-  Reloading dependent: PrgEnv-gnu/7.0.0
-```
-```
+auser@login01-nmn:~> module restore PrgEnv-gnu
+auser@login01-nmn:~> module swap gcc gcc/9.3.0
 auser@login01-nmn:~> module list
 ```
 {: .language-bash}
 ```
+Unloading cray-libsci/20.08.1.2
+Unloading cray-mpich/8.0.15
+Unloading xpmem/2.2.35-7.0.1.0_1.3__gd50fabf.shasta
+
+Unloading perftools-base/20.09.0
+  WARNING: Did not unuse /opt/cray/pe/perftools/20.09.0/modulefiles
+
+Unloading cray-dsmml/0.1.2
+Unloading craype-network-ofi
+Unloading libfabric/1.11.0.0.233
+Unloading craype-x86-rome
+
+Unloading craype/2.7.0
+  WARNING: Did not unuse /opt/cray/pe/craype/2.7.0/modulefiles
+
+Unloading cce/10.0.3
+Unloading cpe-cray
+Loading cpe-gnu
+Loading gcc/10.1.0
+Loading craype/2.7.0
+Loading craype-x86-rome
+Loading libfabric/1.11.0.0.233
+Loading craype-network-ofi
+Loading cray-dsmml/0.1.2
+Loading perftools-base/20.09.0
+Loading xpmem/2.2.35-7.0.1.0_1.3__gd50fabf.shasta
+Loading cray-mpich/8.0.15
+Loading cray-libsci/20.08.1.2
+
 Currently Loaded Modulefiles:
- 1) craype/2.6.4(default)             5) cray-dsmml/0.1.0(default)                            9) cray-mpich/8.0.10(default)  
- 2) craype-x86-rome                   6) perftools-base/20.05.0(default)                     10) gcc/8.1.0                   
- 3) libfabric/1.10.0.0.249(default)   7) xpmem/2.2.35-7.0.1.0_3.9__gfa8d091.shasta(default)  11) PrgEnv-gnu/7.0.0(default)   
- 4) craype-network-slingshot10        8) cray-libsci/20.03.1.4(default)
+ 1) cpe-gnu                           7) perftools-base/20.09.0(default)                     
+ 2) craype/2.7.0(default)             8) xpmem/2.2.35-7.0.1.0_1.3__gd50fabf.shasta(default)  
+ 3) craype-x86-rome                   9) cray-mpich/8.0.15(default)                          
+ 4) libfabric/1.11.0.0.233(default)  10) cray-libsci/20.08.1.2(default)                      
+ 5) craype-network-ofi               11) gcc/9.3.0                                           
+ 6) cray-dsmml/0.1.2(default)         
 ```
+{: .output}
 
 > ## Not all versions are guaranteed to work
 > Each Cray Programming Environment release is released as a coherent set of software that is 
 > guaranteed to work together as a whole. This means that not all compiler version and library
 > version combinations have been tested. If you select a combination from two different PE
 > releases you may experience incompatibility issues.
->
-> There are particular modules you can use to switch the default module settings to those for
-> different PE releases to ensure you get compatible sets of software, these are the `cdt` 
-> modules.
 {: .callout}
+
+<!-- Add note on cdt modules once they are there -->
 
 ## Compiler wrapper scripts
 
@@ -374,6 +446,22 @@ The compiler wrapper scripts are available for Fortran, C, and C++:
 * `CC` -- C++ compiler
 
 The wrapper scripts can be used to compile both sequential and parallel codes.
+
+## Dynamic linking on ARCHER2
+
+ARCHER2 currently only supports dynamic linking (you will see an error if you 
+try to link applications statically). As well as linking dynamically, all 
+HPE Cray software libraries are added to the executable *RUNPATH*. This means
+that you do not need to restore programming environments or load particular
+Cray modules in your job submission scripts to run on the compute nodes. However,
+if you do load different versions of libraries used by your application in your
+job submission scripts, these will take precedence over the versions encoded in
+the binary RUNPATH.
+
+**Note:** Software libraries provided by the CSE team via modules **are not**
+captured in the binary RUNPATH so these **do** need to be loaded in your 
+job submission scritps for the dynamic executable to be able to find them
+successfully.
 
 ## Getting help with software
 
