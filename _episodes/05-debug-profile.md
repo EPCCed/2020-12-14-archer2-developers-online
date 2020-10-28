@@ -32,10 +32,10 @@ The following debugging tools are available on ARCHER2:
 * **valgrind4hpc** is a parallel memory debugging tool that aids in detection of memory leaks and
   errors in parallel applications. It aggregates like errors across processes and threads to simply
   debugging of parallel appliciations.
-%* **STAT** generate merged stack traces for parallel applications. Also has visualisation tools.
-%* **ATP** scalable core file and backtrace analysis when parallel programs crash.
-%* **CCDB** Cray Comparative Debugger. Compare two versions of code side-by-side to analyse differences.
-
+<!--* **STAT** generate merged stack traces for parallel applications. Also has visualisation tools.
+* **ATP** scalable core file and backtrace analysis when parallel programs crash.
+* **CCDB** Cray Comparative Debugger. Compare two versions of code side-by-side to analyse differences.
+-->
 See [the Cray Performance Measurement and Analysis Tools User Guide](https://pubs.cray.com/bundle/Cray_Performance_Measurement_and_Analysis_Tools_User_Guide_644_S-2376/page/About_the_Cray_Performance_Measurement_and_Analysis_Tools_User_Guide.html)
 
 ## Using gdb4hpc to debug an application

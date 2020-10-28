@@ -24,9 +24,8 @@ any questions you have or report issues with your use of the service. You can co
 ARCHER2 Service Desk at: [support@archer2.ac.uk](mailto:support@archer2.ac.uk).
 
 If you have a particular issue that you would like to discuss in more depth with an expert
-from the ARCHER2 CSE service you can book a callback from them at a time of your convenience
-(**TODO** add in hours that this can be requested in). Please contact the service desk if you
-want to book a callback with a description of what you want to discuss and your preferred
+from the ARCHER2 CSE service you can book a callback from them at a time of your convenience.
+Please contact the service desk if you want to book a callback with a description of what you want to discuss and your preferred
 time(s) for a callback.
 
 ## Documentation
@@ -88,7 +87,7 @@ see [the ARCHER2 eCSE pages](https://www.archer2.ac.uk/ecse/)
 
 ## Acknowledging ARCHER2
 
-**TODO** Add ARCHER2 DOI
+<!--**TODO** Add ARCHER2 DOI-->
 
 {% include links.md %}
 

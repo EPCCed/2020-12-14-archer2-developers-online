@@ -49,7 +49,7 @@ standard     up 1-00:00:00    380   idle nid[001017,001156-001157,001479-001489,
 
 There is a row for each node state and partition combination. The default output shows the following columns:
 
-* `PARTITION` - The system partition (**TODO** confirm partitions on ARCHER2)
+* `PARTITION` - The system partition
 * `AVAIL` - The status of the partition - `up` in normal operation
 * `TIMELIMIT` - Maximum runtime as `days-hours:minutes:seconds`: on ARCHER2, these are set using *QoS*
   (Quality of Service) rather than on partitions
