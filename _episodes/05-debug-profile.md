@@ -43,7 +43,7 @@ See [the Cray Performance Measurement and Analysis Tools User Guide](https://pub
 For this exercise, we'll be debugging a short program using gdb4hpc. To start, we'll grab a copy of a buggy code from ARCHER2:
 
 ```bash
-wget {{site.url}}{{site.baseurl}}/files/gdb4hpc_exercise.c
+wget {{site.github.repository_url}}/gh_pages/files/gdb4hpc_exercise.c?raw=true
 ```
 
 You can look at the code if you want -- you might even be able to debug it by inspection (but that defeats the purpose of this exercise). When you're ready, compile the code using the C compiler wrappers and the debugging flag `-g`:

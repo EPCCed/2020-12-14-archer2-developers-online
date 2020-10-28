@@ -39,7 +39,7 @@ auser@login01-nmn:~> sinfo
 {: .language-bash}
 ```
 PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
-workq*       up   infinite      8   idle nid[000001-000008]
+standard       up   infinite      8   idle nid[000001-000008]
 ```
 {: .output}
 
@@ -66,8 +66,8 @@ The nodes can be in many different states, the most common you will see are:
 If you prefer to see the state of individual nodes, you can use the `sinfo -N -l` command.
 
 > ## Lots to look at!
-> Warning! The `sinfo -N -l` command will produce a lot of output as there are over 5000 individual 
-> nodes on ARCHER2!
+> Warning! The `sinfo -N -l` command will produce a lot of output as there are over 1000 individual 
+> nodes on the current ARCHER2 system!
 {: .callout}
 
 ```
@@ -77,14 +77,14 @@ auser@login01-nmn:~> sinfo -N -l
 ```
 Fri Jul 10 09:45:54 2020
 NODELIST   NODES PARTITION       STATE CPUS    S:C:T MEMORY TMP_DISK WEIGHT AVAIL_FE REASON              
-nid000001      1    workq*        idle  256   2:64:2 490124        0      1   (null) none                
-nid000002      1    workq*        idle  256   2:64:2 490124        0      1   (null) none                
-nid000003      1    workq*        idle  256   2:64:2 490124        0      1   (null) none                
-nid000004      1    workq*        idle  256   2:64:2 490124        0      1   (null) none                
-nid000005      1    workq*        idle  256   2:64:2 244046        0      1   (null) none                
-nid000006      1    workq*        idle  256   2:64:2 244046        0      1   (null) none                
-nid000007      1    workq*        idle  256   2:64:2 244046        0      1   (null) none                
-nid000008      1    workq*        idle  256   2:64:2 244046        0      1   (null) none  
+nid001001      1    standard        idle  256   2:64:2 244046        0      1   (null) none                
+nid001002      1    standard        idle  256   2:64:2 244046        0      1   (null) none                
+nid001003      1    standard        idle  256   2:64:2 244046        0      1   (null) none                
+nid001004      1    standard        idle  256   2:64:2 244046        0      1   (null) none                
+nid001005      1    standard        idle  256   2:64:2 244046        0      1   (null) none                
+nid001006      1    standard        idle  256   2:64:2 244046        0      1   (null) none                
+nid001007      1    standard        idle  256   2:64:2 244046        0      1   (null) none                
+nid001008      1    standard        idle  256   2:64:2 244046        0      1   (null) none  
 
 ...lots of output trimmed...
 
@@ -96,13 +96,13 @@ nid000008      1    workq*        idle  256   2:64:2 244046        0      1   (n
 > command to see the name, CPUs and memory available on the worker nodes (the instructors will give you the ID of
 > the compute node to use):
 > ```
-> [auser@login01-nmn:~> sinfo -n nid000005 -o "%n %c %m"
+> [auser@login01-nmn:~> sinfo -n nid001005 -o "%n %c %m"
 > ```
 > {: .language-bash}
 > This should display the resources available for a standard node. Can you use `sinfo` to find out the range of
 > node IDs for the high memory nodes?
 > > ## Solution
-> > The high memory nodes have IDs `nid000001-nid000004`. You can get this by using:
+> > The high memory nodes have IDs `nid001001-nid001004`. You can get this by using:
 > >
 > > ```
 > > auser@login01-nmn:~> sinfo -N -l -S "-m" | less
@@ -114,6 +114,15 @@ nid000008      1    workq*        idle  256   2:64:2 244046        0      1   (n
 > > off the screen.
 > >
 > {: .solution}
+> It is also possible to search nodes by state. Can you find all the free nodes in the system?
+> > ## Solution
+> > `sinfo` lets you specify the state of a node to search for, so to get all the free nodes in the system you can use:
+> > ```
+> > sinfo -N -l --state=idle
+> > ```
+> > More information on what `sinfo` can display can be found in the `sinfo` manual page, i.e. `man sinfo`
+> {: .solution}
+
 {: .challenge}
 
 ## Using batch job submission scripts
@@ -135,7 +144,9 @@ two nodes.
 #SBATCH --ntasks-per-node=128
 #SBATCH --cpus-per-task=1
 #SBATCH --time=0:10:0
-#SBATCH --account=t01
+#SBATCH --partition=standard
+#SBATCH --qos=standard
+#SBATCH --account=ta004
 
 module load xthi
 
@@ -153,6 +164,8 @@ The options shown here are:
 * `--ntasks-per-node=128` - Set 128 parallel processes per node (usually corresponds to MPI ranks)
 * `--cpus-per-task=1` - Number of cores to allocate per parallel process 
 * `--time=0:10:0` - Set 10 minutes maximum walltime for this job
+* `--partition=standard` - Submit to the standard set of nodes
+* `--qos=standard` - Submit with the standard quality of service settings.
 * `--account=t01` - Charge the job to the `t01` budget
 
 We will discuss the `srun` command further below.
@@ -192,7 +205,7 @@ Slurm reports back with the job ID for the job you have submitted
 > > ```
 > > #!/bin/bash
 > > #SBATCH --job-name=my_mpi_job
-> > #SBATCH --account=t01
+> > #SBATCH --account=ta004
 > >
 > > echo "Nodes: $SLURM_JOB_NUM_NODES"
 > > echo "Tasks per node: $SLURM_NTASKS_PER_NODE"
@@ -320,6 +333,8 @@ per node and 16 OpenMP threads per MPI task (so all 256 cores across both nodes 
 #SBATCH --cpus-per-task=16
 #SBATCH --threads-per-core=1
 #SBATCH --time=0:10:0
+#SBATCH --partition=standard
+#SBATCH --qos=standard
 #SBATCH --account=t01
 
 module load xthi
@@ -384,23 +399,23 @@ auser@login01-nmn:~> srun xthi
 ```
 {: .language-bash}
 ```
-Hello from rank 242, thread 0, on nid000002. (core affinity = 46,174)
-Hello from rank 249, thread 0, on nid000002. (core affinity = 31,159)
-Hello from rank 225, thread 0, on nid000002. (core affinity = 28,156)
-Hello from rank 231, thread 0, on nid000002. (core affinity = 124,252)
-Hello from rank 233, thread 0, on nid000002. (core affinity = 29,157)
-Hello from rank 234, thread 0, on nid000002. (core affinity = 45,173)
-Hello from rank 240, thread 0, on nid000002. (core affinity = 14,142)
-Hello from rank 246, thread 0, on nid000002. (core affinity = 110,238)
-Hello from rank 248, thread 0, on nid000002. (core affinity = 15,143)
-Hello from rank 251, thread 0, on nid000002. (core affinity = 63,191)
-Hello from rank 252, thread 0, on nid000002. (core affinity = 79,207)
-Hello from rank 223, thread 0, on nid000002. (core affinity = 123,251)
-Hello from rank 71, thread 0, on nid000001. (core affinity = 120,248)
-Hello from rank 227, thread 0, on nid000002. (core affinity = 60,188)
-Hello from rank 243, thread 0, on nid000002. (core affinity = 62,190)
-Hello from rank 250, thread 0, on nid000002. (core affinity = 47,175)
-Hello from rank 53, thread 0, on nid000001. (core affinity = 86,214)
+Hello from rank 242, thread 0, on nid001002. (core affinity = 46,174)
+Hello from rank 249, thread 0, on nid001002. (core affinity = 31,159)
+Hello from rank 225, thread 0, on nid001002. (core affinity = 28,156)
+Hello from rank 231, thread 0, on nid001002. (core affinity = 124,252)
+Hello from rank 233, thread 0, on nid001002. (core affinity = 29,157)
+Hello from rank 234, thread 0, on nid001002. (core affinity = 45,173)
+Hello from rank 240, thread 0, on nid001002. (core affinity = 14,142)
+Hello from rank 246, thread 0, on nid001002. (core affinity = 110,238)
+Hello from rank 248, thread 0, on nid001002. (core affinity = 15,143)
+Hello from rank 251, thread 0, on nid001002. (core affinity = 63,191)
+Hello from rank 252, thread 0, on nid001002. (core affinity = 79,207)
+Hello from rank 223, thread 0, on nid001002. (core affinity = 123,251)
+Hello from rank 71, thread 0, on nid001001. (core affinity = 120,248)
+Hello from rank 227, thread 0, on nid001002. (core affinity = 60,188)
+Hello from rank 243, thread 0, on nid001002. (core affinity = 62,190)
+Hello from rank 250, thread 0, on nid001002. (core affinity = 47,175)
+Hello from rank 53, thread 0, on nid001001. (core affinity = 86,214)
 
 ...long output trimmed...
 ```
