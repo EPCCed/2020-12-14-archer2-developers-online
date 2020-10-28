@@ -139,13 +139,13 @@ to query your project quota on the work file system you could use:
 <!-- TODO update with correct command for ARCHER2 -->
 
 ```
-lfs quota -hg t01 /fs3
+lfs quota -hg t01 /work
 ```
 {: .language-bash}
 ```
 Disk quotas for group t01 (gid 1001):
      Filesystem    used   quota   limit   grace   files   quota   limit   grace
-           /fs3  17.24T      0k  21.95T       - 6275076       0 10000000       -
+           /work  17.24T      0k  21.95T       - 6275076       0 10000000       -
 ```
 {: .output}
 
@@ -154,13 +154,13 @@ the whole project is using and the `limit` column shows how much quota is availa
 project. You can show your own user's use and quota with:
 
 ```
-lfs quota -hu auser /fs3
+lfs quota -hu auser /work
 ```
 {: .language-bash}
 ```
 Disk quotas for user auser (uid 5496):
      Filesystem    used   quota   limit   grace   files   quota   limit   grace
-           /fs3  8.526T      0k      0k       -  764227       0       0       -
+           /work  8.526T      0k      0k       -  764227       0       0       -
 ```
 {: .output}
 
