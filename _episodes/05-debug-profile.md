@@ -32,9 +32,9 @@ The following debugging tools are available on ARCHER2:
 * **valgrind4hpc** is a parallel memory debugging tool that aids in detection of memory leaks and
   errors in parallel applications. It aggregates like errors across processes and threads to simply
   debugging of parallel appliciations.
-* **STAT** generate merged stack traces for parallel applications. Also has visualisation tools.
-* **ATP** scalable core file and backtrace analysis when parallel programs crash.
-* **CCDB** Cray Comparative Debugger. Compare two versions of code side-by-side to analyse differences.
+%* **STAT** generate merged stack traces for parallel applications. Also has visualisation tools.
+%* **ATP** scalable core file and backtrace analysis when parallel programs crash.
+%* **CCDB** Cray Comparative Debugger. Compare two versions of code side-by-side to analyse differences.
 
 See [the Cray Performance Measurement and Analysis Tools User Guide](https://pubs.cray.com/bundle/Cray_Performance_Measurement_and_Analysis_Tools_User_Guide_644_S-2376/page/About_the_Cray_Performance_Measurement_and_Analysis_Tools_User_Guide.html)
 
@@ -43,13 +43,13 @@ See [the Cray Performance Measurement and Analysis Tools User Guide](https://pub
 For this exercise, we'll be debugging a short program using gdb4hpc. To start, we'll grab a copy of a buggy code from ARCHER2:
 
 ```bash
-cp -r /work/shared/debug_tutorial/ ./
+wget {{site.url}}{{site.baseurl}}/files/gdb4hpc_exercise.c
 ```
 
 You can look at the code if you want -- you might even be able to debug it by inspection (but that defeats the purpose of this exercise). When you're ready, compile the code using the C compiler wrappers and the debugging flag `-g`:
 
 ```bash
- cc -g buggy_script.c -o my_exe
+ cc -g gdb4hpc_exercise.c -o my_exe
  ```
 
 You can choose a different name for your executable, but I'll be using `my_exe` through this exercise for consistency -- if you use a different name, make the appropriate change wherever you see `my_exe`.

@@ -59,7 +59,7 @@ and this will differ from individual to individual!
 > In this exercise, you should try and decide on a good choice of resources and settings
 > on ARCHER2 for a typical biomolecular system. This will involve:
 >
-> - Downloading the [input file for GROMACS]({{ site.baseurl }}/files/ion-channel.tpr)
+> - Downloading the [input file for GROMACS] ({{site.url}}{{site.baseurl}}/files/ion-channel.tpr)
 > - Writing a job submission script to run GROMACS on ARCHER2 using the system documentation
 > - Varying the number of nodes (from 1 to 16 nodes is a good starting point) used for the GROMACS job
 >   and benchmarking the performance (in ns/day)
@@ -75,7 +75,6 @@ and this will differ from individual to individual!
 > Please ask for more information on these options from a helper!
 {: .challenge}
 
-**TODO** Add GROMACS files required for this (make sure they work with latest GROMACS)
 
 {% include links.md %}
 
