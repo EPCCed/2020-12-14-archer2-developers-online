@@ -86,6 +86,12 @@ to research software on ARCHER2. To find out more about the eCSE programme and h
 see [the ARCHER2 eCSE pages](https://www.archer2.ac.uk/ecse/)
 
 ## Acknowledging ARCHER2
+You should use the following phrase to acknowledge ARCHER2 for all research outputs that were generated using the ARCHER2 service:
+```
+This work used the ARCHER2 UK National Supercomputing Service (https://www.archer2.ac.uk).
+```
+
+You should also tag outputs with the keyword ARCHER2 whenever possible.
 
 <!--**TODO** Add ARCHER2 DOI-->
 
