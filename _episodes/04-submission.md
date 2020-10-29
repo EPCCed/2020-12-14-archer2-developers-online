@@ -262,6 +262,7 @@ auser@login01-nmn:~> squeue
 You can use the `scancel` command to cancel jobs that are queued or running. When used on running jobs
 it stops them immediately.
 
+<!-- Great content, not currently available
 > ## Getting notified
 > Slurm on ARCHER2 can also send e-mails to notify you when your job starts, ends, fails, etc. Can
 > you find out how you would setup your job script to send you an e-mail when your job finishes and
@@ -273,7 +274,7 @@ it stops them immediately.
 > > 50%, 80% and 90% of the way through the specified walltime.
 > {: .solution}
 {: .challenge}
-
+-->
 ### Running parallel applications using `srun`
 
 Once past the header section your script consists of standard shell commands required to run your
