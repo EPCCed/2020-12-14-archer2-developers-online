@@ -49,16 +49,18 @@ wget {{site.github.repository_url}}/gh_pages/blob/files/gdb4hpc_exercise.c?raw=t
 You can look at the code if you want -- you might even be able to debug it by inspection (but that defeats the purpose of this exercise). When you're ready, compile the code using the C compiler wrappers and the debugging flag `-g`:
 
 ```bash
- cc -g gdb4hpc_exercise.c -o my_exe
+ cc -g gdb4hpc_exercise.c -o gdb_exercise
  ```
 
-You can choose a different name for your executable, but I'll be using `my_exe` through this exercise for consistency -- if you use a different name, make the appropriate change wherever you see `my_exe`.
+You can choose a different name for your executable, but I'll be using `gdb_exercise` through this exercise for consistency -- if you use a different name, make the appropriate change wherever you see `gdb_exercise`.
 
 We'll be using ``gdb4hpc`` to go through this program and see where errors might arise.
 
-Load and launch ``gdb4hpc``:
+Setup your environment, load and launch ``gdb4hpc``:
 
 ```bash
+ export CTI_WLM_IMPL=slurm
+ export CTI_LAUNCHER_NAME=srun
  module load gdb4hpc
  gdb4hpc
 ```
@@ -78,7 +80,7 @@ You will get some information about this version of the program and, eventually,
 We will use ``launch`` to start an application within gdb4hpc. For now, we want to run our simulation on a single process, so we will type:
 
 ```bash
- dbg all> launch $my_prog{1} ./my_exe
+ dbg all> launch -launcher-args="--account=[budget code] --partition=standard --qos=standard --tasks-per-node=1 --cpus-per-task=1 --exclusive --export=ALL" $my_prog{1} ./gdb_exercise
 ```
     
 This will launch an ``srun`` job on one of the compute nodes. The name `my_prog` is a dummy name to which this run-through of the program is linked -- you will not be able to launch another program using this name, and you can use any name you want instead. The number in the brackets ``{1}`` indicates the number of processes this job will be using (it's  1 here). You could use a larger number if you wanted. If you call for more processes than available on a single compute node, `gdb4hpc` will launch the program on an appropriate number of nodes. Note though that the more cores you ask for, the slower `gdb4hpc` will be.
@@ -163,7 +165,7 @@ The current value of variable `count` is printed to screen. If we progress the c
 Let's now try launching across multiple processes:
 
 ```bash
- dbg all> launch $my_prog{2} ./my_exe
+ dbg all> launch -launcher-args="--account=[budget code] --partition=standard --qos=standard --tasks-per-node=2 --cpus-per-task=1 --exclusive --export=ALL" $my_prog{2} ./gdb_exercise
 ```
 
 > ## Exercise
@@ -177,7 +179,7 @@ Let's `quit` our program, fix that bug, and go back into `gdb4hpc`. Again, we'll
 
 ```bash
  dbg all> release $my_prog
- dbg all > launch $my_new_prog{2} ./my_exe
+ dbg all> launch -launcher-args="--account=[budget code] --partition=standard --qos=standard --tasks-per-node=2 --cpus-per-task=1 --exclusive --export=ALL" $my_new_prog{2} ./gdb_exercise	
 ```
 
 This time, instead of `next`, we will use `step` -- this does the same as `next` with the added feature that we can go into functions and subroutines where applicable. As the new bug appears to come from the `sum_even` function, let's see where exactly the program hangs.
