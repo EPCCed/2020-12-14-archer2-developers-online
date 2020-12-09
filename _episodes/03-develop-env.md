@@ -17,8 +17,6 @@ keypoints:
 - "The CSE service can help with software development issues."
 ---
 
-<!-- TODO: Need to check all material here once Lmod is actually available -->
-
 ## Using software modules on ARCHER2
 
 ARCHER2 software modules use the

@@ -25,7 +25,7 @@ this section we will look at how you use SAFE for common tasks associated with y
 ARCHER2.
 
 More information on using SAFE can be found in
-[the SAFE User Guide](https://www.archer2.ac.uk/documentation/safe-guide/)
+[the SAFE User Guide](https://epcced.github.io/safe-docs/)
 
 ## Account management
 

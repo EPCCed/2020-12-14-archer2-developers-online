@@ -24,9 +24,8 @@ any questions you have or report issues with your use of the service. You can co
 ARCHER2 Service Desk at: [support@archer2.ac.uk](mailto:support@archer2.ac.uk).
 
 If you have a particular issue that you would like to discuss in more depth with an expert
-from the ARCHER2 CSE service you can book a callback from them at a time of your convenience
-(**TODO** add in hours that this can be requested in). Please contact the service desk if you
-want to book a callback with a description of what you want to discuss and your preferred
+from the ARCHER2 CSE service you can book a callback from them at a time of your convenience.
+Please contact the service desk if you want to book a callback with a description of what you want to discuss and your preferred
 time(s) for a callback.
 
 ## Documentation
@@ -87,8 +86,14 @@ to research software on ARCHER2. To find out more about the eCSE programme and h
 see [the ARCHER2 eCSE pages](https://www.archer2.ac.uk/ecse/)
 
 ## Acknowledging ARCHER2
+You should use the following phrase to acknowledge ARCHER2 for all research outputs that were generated using the ARCHER2 service:
+```
+This work used the ARCHER2 UK National Supercomputing Service (https://www.archer2.ac.uk).
+```
 
-**TODO** Add ARCHER2 DOI
+You should also tag outputs with the keyword ARCHER2 whenever possible.
+
+<!--**TODO** Add ARCHER2 DOI-->
 
 {% include links.md %}
 

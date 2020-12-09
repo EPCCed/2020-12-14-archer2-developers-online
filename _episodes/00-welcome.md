@@ -53,7 +53,7 @@ to use the stickies in other, specific situations.
 At the lunch break (and end of days for multi-day courses) we will also run a quick feedback
 activity to gauge how the course is matching onto attendees requirements. Instructors and helpers
 will review this feedback over lunch (or overnight) and provide a summary of what we found at the
-start of the next session and, potentially, how the upcoming materiel/schedule will be changed
+start of the next session and, potentially, how the upcoming material/schedule will be changed
 to address the feedback.
 
 Finally, you will be provided with the opportunity to provide feedback on the course after it has
