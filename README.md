@@ -5,6 +5,9 @@
 
 # ARCHER2 for package users
 
+The pages is available at
+https://epcced.github.io/2020-12-14-archer2-developers-online/
+
 ## Maintainer(s)
 
 * Andy Turner
