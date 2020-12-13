@@ -335,8 +335,6 @@ where different values of *type* are avaialble.
 {: .challenge}
 
 
-{: .language-bash}
-
 ### MPI programs using fewer than 128 cores per node
 
 Suppose we have an MPI program (still no OpenMP threads) and we wish to
@@ -373,9 +371,9 @@ This specifies the pattern on a per-node basis.
 
 ### Hybrid MPI and OpenMP jobs
 
-Consdier a hybrid job with both MPI (the individual tasks can alos
+Consider a hybrid job with both MPI (the individual tasks can also
 be referred to as ranks or processes) and OpenMP
-(with multiple threads). Here, wee need to allocate a appropriate number
+(with multiple threads). Here, we need to allocate an appropriate number
 of cores to each MPI task so that the relevant number of threads can be
 accommodated by `srun`.
 
@@ -412,7 +410,6 @@ is no `--cpu_bind` options to `srun`.
 #SBATCH --cpus-per-task=8
 
 module load epcc-job-env
-
 module load xthi
 
 export OMP_NUM_THREADS=8
@@ -423,7 +420,7 @@ srun xthi
 {: .language-bash}
 
 
-> ### Hybrid MPI/OpenMP jobs
+> ## Hybrid MPI/OpenMP jobs
 >
 > Using the above script, check the placement of tasks/threads. You
 > should find that SLURM has allocated 2 threads to each physical
@@ -442,6 +439,7 @@ srun xthi
 > between nodes and within nodes, the default being `block:cyclic`.
 >
 > The solution shows the final script:
+>> ## Solution
 >> ```
 >> #!/bin/bash
 >>
