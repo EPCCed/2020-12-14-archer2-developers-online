@@ -43,7 +43,7 @@ See [the Cray Performance Measurement and Analysis Tools User Guide](https://pub
 For this exercise, we'll be debugging a short program using gdb4hpc. To start, we'll grab a copy of a buggy code from ARCHER2:
 
 ```bash
-wget {{site.github.repository_url}}/gh_pages/blob/files/gdb4hpc_exercise.c?raw=true
+wget {{site.url}}{{site.baseurl}}/files/gdb4hpc_exercise.c
 ```
 
 You can look at the code if you want -- you might even be able to debug it by inspection (but that defeats the purpose of this exercise). When you're ready, compile the code using the C compiler wrappers and the debugging flag `-g`:
@@ -80,7 +80,7 @@ You will get some information about this version of the program and, eventually,
 We will use ``launch`` to start an application within gdb4hpc. For now, we want to run our simulation on a single process, so we will type:
 
 ```bash
- dbg all> launch -launcher-args="--account=[budget code] --partition=standard --qos=standard --tasks-per-node=1 --cpus-per-task=1 --exclusive --export=ALL" $my_prog{1} ./gdb_exercise
+ dbg all> launch --launcher-args="--account=[budget code] --partition=standard --qos=standard --tasks-per-node=1 --cpus-per-task=1 --exclusive --export=ALL" $my_prog{1} ./gdb_exercise
 ```
     
 This will launch an ``srun`` job on one of the compute nodes. The name `my_prog` is a dummy name to which this run-through of the program is linked -- you will not be able to launch another program using this name, and you can use any name you want instead. The number in the brackets ``{1}`` indicates the number of processes this job will be using (it's  1 here). You could use a larger number if you wanted. If you call for more processes than available on a single compute node, `gdb4hpc` will launch the program on an appropriate number of nodes. Note though that the more cores you ask for, the slower `gdb4hpc` will be.
@@ -100,7 +100,8 @@ Launch complete.
 my_prog{0}: Initial breakpoint, main at /PATH/TO/gdb4hpc_exercise.c:9
 ```
     
-The line number at which the initial breakpoint is made (in the above example, line 7) corresponds to the first line within the `main` function.
+The line number at which the initial breakpoint is made (in the above example,
+line 9) corresponds to the first line within the `main` function.
 
 Once the code is loaded, you can use various commands to move through your code. The following lists and describes some of the most useful ones:
 
