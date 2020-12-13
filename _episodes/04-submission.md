@@ -199,7 +199,7 @@ Slurm reports back with the job ID for the job you have submitted
 
 > ## What are the default for `sbatch` options?
 > Make sure you can submit the batch script example given above.
-> By removing specific `sbatch` options options, can you work out the
+> By removing specific `sbatch` options, can you work out the
 > default values for:
 > 
 > 
@@ -211,12 +211,11 @@ Slurm reports back with the job ID for the job you have submitted
 > > ## Solution
 > > 
 > > (1) If `--nodes` is omitted, the default is 1 node.
+> > 
 > > (2) If `--ntasks-per-node` is omitted, the default is 1 task per node.
 > >
-> > (3) 
-> >
-> > Getting the default time limit is more difficult - we need to use `sacct`
-> > to query the time limit set for the job.
+> > (3) Getting the default time limit is more difficult. We need to use the
+> >     `sacct` command to query the time limit set for the job.
 > > For example, if the job ID was "12345", then we could query the time limit with:
 > > 
 > > ```
@@ -229,8 +228,10 @@ Slurm reports back with the job ID for the job you have submitted
 > >   01:00:00
 > > ```
 > > {: .output}
+> > showing that the default time limit is 1 hour.
 > >
-> > (4) The partition and qos option must be specified.
+> > (4) The `--partition` and `--qos` options must be specified. An error
+> >     will be generated at the point of submission if either is omitted.
 > {: .solution}
 {: .challenge}
 
@@ -269,7 +270,7 @@ it stops them immediately.
 
 ### Running parallel applications using `srun`
 
-Once past the header section your script consists of standard shell commands
+A submission script consists of standard shell commands: those
 required to run your job. These can be simple or complex depending on how
 you run your jobs, but even the simplest job
 script usually contains commands to:
@@ -290,8 +291,10 @@ srun xthi
 If we wish to control the placement explicitly, we can use the ``srun``
 option
 ```
-srun --cpu_bind=*type*
+srun --cpu_bind=type
 ```
+where different values of *type* are avaialble.
+
 {: .language-bash}
 
 > ## An MPI program with ``--cpu_bind=rank``
@@ -334,7 +337,7 @@ srun --cpu_bind=*type*
 
 {: .language-bash}
 
-## MPI programs using fewer than 128 cores per node
+### MPI programs using fewer than 128 cores per node
 
 Suppose we have an MPI program (still no OpenMP threads) and we wish to
 run with 8 MPI tasks per node with one MPI task per NUMA region (this
@@ -342,7 +345,7 @@ might be appropriate is each MPI task has a significant memory footprint,
 for example).
 
 Explicit control of the binding is this case is possible via
-``--cpu_bin=map_cpu:*list*``, where the *list* specficies which
+`--cpu_bin=map_cpu:list`, where the *list* specficies which
 cores consecutive MPI tasks will run on. For example, for 1 MPI
 task per NUMA region, we could specify:
 ```
@@ -361,7 +364,7 @@ This specifies the pattern on a per-node basis.
 > nodes and cores output by `xthi` is what you expect.
 > 
 > > ## Solution
-> > 1. The affinity should match the map selected (0,16,32,48,64,80,96,122) on
+> > 1. The affinity should match the map selected (0,16,32,48,64,80,96,112) on
 > >    each node.
 > > 2. `srun --cpu_bind=map_cpu:0,64 xthi`
 > {: .solution}
@@ -370,15 +373,15 @@ This specifies the pattern on a per-node basis.
 
 ### Hybrid MPI and OpenMP jobs
 
-When running hybrid MPI (with the individual tasks also known as ranks or
-processes) and OpenMP
-(with multiple threads) jobs, you need to leave free cores between the parallel
- tasks launched
-using `srun` for the multiple OpenMP threads that will be associated with each MPI task.
+Consdier a hybrid job with both MPI (the individual tasks can alos
+be referred to as ranks or processes) and OpenMP
+(with multiple threads). Here, wee need to allocate a appropriate number
+of cores to each MPI task so that the relevant number of threads can be
+accommodated by `srun`.
 
 As we saw above, you can use the options to `sbatch` to control how many
-parallel tasks are placed on each compute node. The number of threads
-per core (strictly, the number of CPUs in SLURM) is then set with
+parallel tasks are placed on each compute node. The number of cores
+(strictly, the number of CPUs in SLURM) per MPI task is then set with
 the option
 ```
 --cpus-per-task
@@ -418,6 +421,7 @@ export OMP_PLACES=cores
 srun xthi
 ```
 {: .language-bash}
+
 
 > ### Hybrid MPI/OpenMP jobs
 >
@@ -462,6 +466,9 @@ srun xthi
 >> export OMP_PLACES=cores
 >>
 >> srun xthi
+>> ```
+> {: .solution}
+{: .challenge}
 
 Each compute node is made up of 8 NUMA (*Non Uniform Memory Access*) regions
 (4 per socket)  with physical 16 cores in each region. Programs where the
